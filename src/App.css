@@ -1,0 +1,150 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700;1,800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --maroon: #8b182a;
+  --maroon-dark: #5a0d1a;
+  --maroon-light: #a32238;
+  --brown: #d7bc9d;
+  --white: #ffffff;
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+  body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  overflow-x: hidden;
+  max-width: 100%;
+  width: 100%;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  overflow-x: hidden;
+  background:
+    radial-gradient(circle at 10% 0%, rgba(139, 24, 42, 0.08), transparent 50%),
+    radial-gradient(circle at 90% 20%, rgba(215, 188, 157, 0.22), transparent 55%),
+    radial-gradient(circle at 50% 100%, rgba(139, 24, 42, 0.05), transparent 60%),
+    linear-gradient(135deg, #fffafa 0%, #faf9f8 100%);
+  background-attachment: fixed;
+  min-height: 100vh;
+  color: #111827;
+}
+
+.serif,
+.serif-logo {
+  font-family: 'Playfair Display', serif;
+}
+
+.hero-title {
+  font-size: clamp(2.5rem, 4.5vw, 4rem);
+  line-height: 1.05;
+  letter-spacing: -2px;
+  font-weight: 800;
+}
+
+.hero-italic {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-weight: 800;
+}
+
+.text-maroon {
+  color: var(--maroon);
+}
+.text-palebrown {
+  color: var(--brown);
+}
+.bg-maroon {
+  background-color: var(--maroon);
+}
+.border-maroon {
+  border-color: var(--maroon);
+}
+
+.nav-inactive {
+  color: #6b7280;
+  font-size: 13px;
+  font-weight: 700;
+  transition: color 0.25s ease;
+}
+.nav-inactive:hover {
+  color: var(--maroon);
+}
+.nav-active {
+  color: var(--maroon);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+button {
+  cursor: pointer;
+}
+input,
+textarea,
+select {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+input::placeholder,
+textarea::placeholder {
+  color: #9ca3af;
+  font-weight: 400;
+}
+
+select {
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%239ca3af'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2.5' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1.2em;
+}
+
+/* Tombol solid maroon elegan */
+.btn-maroon {
+  background-color: var(--maroon);
+  color: var(--white);
+  font-weight: 700;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1.25rem;
+  transition: all 0.25s ease;
+}
+.btn-maroon:hover {
+  background-color: var(--maroon-dark);
+  box-shadow: 0 8px 16px rgba(139, 24, 42, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Card glassmorphism */
+.card-glass {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  border-radius: 1.5rem;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  transition: all 0.3s ease;
+}
+.card-glass:hover {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+  border-color: var(--maroon-light);
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.02);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(139, 24, 42, 0.3);
+  border-radius: 20px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 24, 42, 0.6);
+}
