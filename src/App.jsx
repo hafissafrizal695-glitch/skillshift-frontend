@@ -1,7 +1,8 @@
-import React, { useState, useMemo, useEffect, useRef } from 'react';
+import React, { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import './App.css';
+import LoginPage from './components/LoginPage';
 
-const API_URL = '/api';
+const API_URL = 'http://localhost:3001/api';
 
 // ─── DATA (dihapus, sekarang dari database) ────────────────────────────────
 // Data diambil dari server SQLite
@@ -44,24 +45,48 @@ function SkillShiftLogo({ onClick, small }) {
       onClick={onClick}
     >
       {/* Icon */}
-      <div className={`${small ? 'w-10 h-10' : 'w-12 h-12'} relative flex-shrink-0 group-hover:scale-105 transition-transform duration-300`}>
-        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+      <div
+        className={`${small ? 'w-10 h-10' : 'w-12 h-12'} relative flex-shrink-0 group-hover:scale-105 transition-transform duration-300`}
+      >
+        <svg
+          viewBox="0 0 48 48"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className="w-full h-full"
+        >
           <defs>
             <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#4a0a15"/>
-              <stop offset="100%" stopColor="#6b1020"/>
+              <stop offset="0%" stopColor="#4a0a15" />
+              <stop offset="100%" stopColor="#6b1020" />
             </linearGradient>
             <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#e8c97a"/>
-              <stop offset="100%" stopColor="#c99042"/>
+              <stop offset="0%" stopColor="#e8c97a" />
+              <stop offset="100%" stopColor="#c99042" />
             </linearGradient>
           </defs>
           {/* Base */}
-          <rect width="48" height="48" rx="13" fill="url(#bgGrad)"/>
+          <rect width="48" height="48" rx="13" fill="url(#bgGrad)" />
           {/* Gold border tipis */}
-          <rect x="1.5" y="1.5" width="45" height="45" rx="12" stroke="url(#goldGrad)" strokeWidth="0.8" strokeOpacity="0.5"/>
+          <rect
+            x="1.5"
+            y="1.5"
+            width="45"
+            height="45"
+            rx="12"
+            stroke="url(#goldGrad)"
+            strokeWidth="0.8"
+            strokeOpacity="0.5"
+          />
           {/* Diagonal accent line kiri */}
-          <line x1="8" y1="40" x2="20" y2="8" stroke="#c99042" strokeWidth="0.6" strokeOpacity="0.25"/>
+          <line
+            x1="8"
+            y1="40"
+            x2="20"
+            y2="8"
+            stroke="#c99042"
+            strokeWidth="0.6"
+            strokeOpacity="0.25"
+          />
           {/* Huruf S elegan */}
           <path
             d="M15.5 18.5C15.5 15.5 17.8 13.5 21 13.5H27.5C30.2 13.5 32.5 15.5 32.5 18C32.5 20.8 30.2 22.5 27 22.5H21C17.8 22.5 15.5 24.8 15.5 27.5C15.5 30.5 17.8 32.5 21 32.5H28C30.8 32.5 33 30.5 33 27.5"
@@ -70,24 +95,41 @@ function SkillShiftLogo({ onClick, small }) {
             strokeLinecap="round"
           />
           {/* Gold dot aksen pojok kanan atas */}
-          <circle cx="37" cy="11" r="2.5" fill="url(#goldGrad)"/>
+          <circle cx="37" cy="11" r="2.5" fill="url(#goldGrad)" />
           {/* Gold line bawah kecil */}
-          <line x1="16" y1="38" x2="32" y2="38" stroke="url(#goldGrad)" strokeWidth="0.8" strokeOpacity="0.4"/>
+          <line
+            x1="16"
+            y1="38"
+            x2="32"
+            y2="38"
+            stroke="url(#goldGrad)"
+            strokeWidth="0.8"
+            strokeOpacity="0.4"
+          />
         </svg>
       </div>
 
       {/* Text */}
       <div className="group-hover:translate-x-0.5 transition-transform duration-300">
-        <div className={`${small ? 'text-[15px]' : 'text-[21px]'} leading-none tracking-tight flex items-baseline gap-[1px]`}>
-          <span className="font-black" style={{ color: '#6b1020' }}>Skill</span>
-          <span className="font-black text-gray-900">Shift</span>
-        </div>
-        <div className="flex items-center gap-1.5 mt-0.5">
-          <div className="h-[1px] w-3 bg-gradient-to-r from-[#c99042] to-transparent"/>
-          <span className="text-[6.5px] uppercase tracking-[.4em] font-black" style={{ color: '#c99042' }}>
-            career portal
-          </span>
-          <div className="h-[1px] w-3 bg-gradient-to-l from-[#c99042] to-transparent"/>
+        <div className="flex flex-col items-center">
+          <div
+            className={`${small ? 'text-[20px]' : 'text-[21px]'} leading-none tracking-tight flex items-baseline gap-[1px]`}
+          >
+            <span className="font-black" style={{ color: '#6b1020' }}>
+              Skill
+            </span>
+            <span className="font-black text-gray-900">Shift</span>
+          </div>
+          <div className="flex items-center gap-1.5 pt-0.5">
+            <div className="h-[1px] w-4 bg-gradient-to-r from-[#c99042] to-transparent" />
+            <span
+              className="text-[7px] uppercase tracking-[.4em] font-black"
+              style={{ color: '#c99042' }}
+            >
+              career portal
+            </span>
+            <div className="h-[1px] w-4 bg-gradient-to-l from-[#c99042] to-transparent" />
+          </div>
         </div>
       </div>
     </div>
@@ -142,9 +184,9 @@ function DropdownFilter({ label, options, selected, onSelect, multi = false }) {
           e.stopPropagation();
           setOpen((o) => !o);
         }}
-        className={`flex items-center gap-2 px-4 py-2.5 text-[12px] font-bold text-gray-800 transition-all whitespace-nowrap min-w-[130px] justify-between hover:text-maroon rounded-xl hover:bg-maroon/5 ${isActive ? 'text-maroon bg-maroon/5' : ''}`}
+        className={`flex items-center gap-2 px-4 py-2.5 text-[12px] font-bold text-gray-800 transition-all whitespace-nowrap min-w-[100px] sm:min-w-[130px] justify-between hover:text-maroon rounded-xl hover:bg-maroon/5 ${isActive ? 'text-maroon bg-maroon/5' : ''}`}
       >
-        <span className="truncate max-w-[110px]">{displayLabel}</span>
+        <span className="truncate max-w-[80px] sm:max-w-[110px]">{displayLabel}</span>
         <svg
           className={`w-4 h-4 flex-shrink-0 transition-transform ${open ? 'rotate-180 text-maroon' : 'text-gray-400'}`}
           fill="none"
@@ -257,15 +299,7 @@ function AdminPasswordModal({ onSuccess, onClose }) {
 }
 
 // ─── JOB DETAIL MODAL (REVISI ELEGAN) ────────────────────────────────────────
-function JobDetailModal({
-  job,
-  profile,
-  savedJobs,
-  onToggleSave,
-  onClose,
-  onMarkAccepted,
-  acceptedJobs,
-}) {
+function JobDetailModal({ job, savedJobs, onToggleSave, onClose, onMarkAccepted, acceptedJobs }) {
   if (!job) return null;
   const isSaved = savedJobs.some((s) => s.id === job.id);
   const isAccepted = acceptedJobs.some((a) => a.id === job.id);
@@ -324,7 +358,7 @@ function JobDetailModal({
               </h2>
               <p className="text-gray-300 text-sm font-semibold mt-2 flex items-center gap-2">
                 <span className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center text-[10px]">
-                  🏢
+                  <img src="/images/icon-gedung.png" alt="company" className="w-4 h-4" />
                 </span>
                 {job.company}
               </p>
@@ -350,7 +384,7 @@ function JobDetailModal({
               {job.title}
             </h2>
             <p className="text-[#d7bc9d] text-sm font-bold mt-3 flex items-center gap-2">
-              🏢 {job.company}
+              <img src="/images/icon-gedung.png" alt="company" className="w-4 h-4" /> {job.company}
             </p>
           </div>
         )}
@@ -360,28 +394,57 @@ function JobDetailModal({
           {/* Info Grid */}
           <div className="grid grid-cols-2 gap-4">
             {[
-              { label: 'Lokasi', value: job.location, icon: '📍' },
-              { label: 'Gaji / Bulan', value: job.salary, icon: '💰' },
-              { label: 'Jam Kerja', value: job.hours, icon: '⏰' },
-              { label: 'Min. Usia', value: `${job.minAge} Tahun`, icon: '👤' },
-            ].map(({ label, value, icon }) => (
+              {
+                label: 'Lokasi',
+                value: job.location,
+                iconImg: '/images/icon-stats-kota.png',
+                iconAlt: 'kota',
+                iconSize: 'w-5 h-5',
+              },
+              {
+                label: 'Gaji / Bulan',
+                value: job.salary,
+                iconImg: '/images/icon-gaji.png',
+                iconAlt: 'salary',
+                iconSize: 'w-5 h-5',
+              },
+              {
+                label: 'Jam Kerja',
+                value: job.hours,
+                iconImg: '/images/jam.png',
+                iconAlt: 'jam',
+                iconSize: 'w-5 h-5',
+              },
+              {
+                label: 'Min. Usia',
+                value: `${job.minAge} Tahun`,
+                iconImg: '/images/icon-usia.png',
+                iconAlt: 'age',
+                iconSize: 'w-5 h-5',
+              },
+            ].map(({ label, value, iconImg, iconAlt, iconEmoji, iconSize }) => (
               <div
                 key={label}
-                className="bg-white border border-gray-100/80 rounded-2xl px-5 py-5 flex flex-col items-center justify-center text-center shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-md transition-all"
+                className="bg-white border border-gray-100/80 rounded-2xl px-4 py-5 flex flex-col items-center justify-center text-center shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-md transition-all"
               >
-                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2 flex items-center gap-1.5">
-                  <span className="text-sm">{icon}</span> {label}
+                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-3 flex items-center gap-2">
+                  {iconImg ? (
+                    <img src={iconImg} alt={iconAlt} className={iconSize} />
+                  ) : (
+                    <span className={iconSize}>{iconEmoji}</span>
+                  )}
+                  {label}
                 </p>
-                <p className="font-black text-gray-900 text-[16px]">{value}</p>
+                <p className="font-black text-gray-900 text-[15px] leading-tight">{value}</p>
               </div>
             ))}
           </div>
 
           {/* Skills */}
-          <div className="bg-gray-50/50 rounded-3xl p-6 border border-gray-100">
+          <div className="bg-gray-50/50 rounded-3xl p-6 border border-gray-100 -ml-4">
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-full bg-maroon/10 text-maroon flex items-center justify-center text-sm">
-                🎯
+              <div className="w-8 h-8 rounded-full bg-maroon/10 text-maroon flex items-center justify-center text-sm flex-shrink-0">
+                <img src="/images/icon-skills.png" alt="skills" className="w-4 h-4" />
               </div>
               <p className="text-[11px] font-black uppercase tracking-[0.2em] text-gray-500">
                 Skills Dibutuhkan
@@ -403,7 +466,7 @@ function JobDetailModal({
           <div>
             <div className="flex items-center gap-2 mb-4 px-2">
               <div className="w-8 h-8 rounded-full bg-maroon/10 text-maroon flex items-center justify-center text-sm">
-                📋
+                <img src="/images/icon-deskripsi.png" alt="description" className="w-4 h-4" />
               </div>
               <p className="text-[11px] font-black uppercase tracking-[0.2em] text-gray-500">
                 Deskripsi Pekerjaan
@@ -418,7 +481,7 @@ function JobDetailModal({
           <div>
             <div className="flex items-center gap-2 mb-4 px-2">
               <div className="w-8 h-8 rounded-full bg-maroon/10 text-maroon flex items-center justify-center text-sm">
-                📞
+                <img src="/images/icon-kontak.png" alt="contact" className="w-4 h-4" />
               </div>
               <p className="text-[11px] font-black uppercase tracking-[0.2em] text-gray-500">
                 Hubungi Rekruter
@@ -430,7 +493,10 @@ function JobDetailModal({
                   onClick={handleWhatsApp}
                   className="flex items-center justify-center gap-3 bg-gradient-to-r from-[#25D366] to-[#128C7E] text-white px-6 py-4 text-xs font-black uppercase tracking-widest hover:shadow-lg hover:-translate-y-1 transition-all rounded-2xl"
                 >
-                  <span className="text-lg">💬</span> WhatsApp
+                  <span className="text-lg">
+                    <img src="/images/icon-whatsapp.png" alt="whatsapp" className="w-4 h-4" />
+                  </span>{' '}
+                  WhatsApp
                 </button>
               )}
               {job.contactEmail && (
@@ -438,37 +504,48 @@ function JobDetailModal({
                   onClick={handleEmail}
                   className="flex items-center justify-center gap-3 bg-white border-2 border-maroon text-maroon px-6 py-4 text-xs font-black uppercase tracking-widest hover:bg-maroon hover:text-white transition-all rounded-2xl shadow-sm hover:shadow-lg"
                 >
-                  <span className="text-lg">✉️</span> Email
+                  <span className="text-lg">
+                    <img src="/images/icon-email.png" alt="email" className="w-4 h-4" />
+                  </span>{' '}
+                  Email
                 </button>
               )}
             </div>
           </div>
 
           {/* Accept/Tracking Banner */}
-{!isAccepted ? (
-  <div className="relative overflow-hidden rounded-3xl border border-[#e8d5b0]/60 bg-[#fdf8f0] p-6">
-    <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#c99042] via-[#e8d5b0] to-[#c99042]" />
-    <div className="absolute -right-6 -bottom-6 w-28 h-28 rounded-full bg-[#c99042]/5" />
-    <div className="flex items-center gap-4 relative z-10">
-      <div className="w-10 h-10 rounded-2xl bg-white border border-[#e8d5b0] flex items-center justify-center text-lg shadow-sm flex-shrink-0">
-        🏆
-      </div>
-      <div className="flex-1">
-        <p className="font-black text-[#7a5c2e] text-[13px] uppercase tracking-widest mb-0.5">
-          Sudah Diterima?
-        </p>
-        <p className="text-[12px] text-[#a0845c] font-medium leading-relaxed">
-          Tandai untuk melacak progres karirmu.
-        </p>
-      </div>
-      <button
-        onClick={() => { onMarkAccepted(job); onClose(); }}
-        className="flex-shrink-0 bg-[#7a5c2e] text-white px-5 py-2.5 text-[11px] font-black uppercase tracking-widest rounded-xl hover:bg-[#5c4020] hover:shadow-md transition-all"
-      >
-        Tandai ✓
-      </button>
-    </div>
-  </div>
+          {!isAccepted ? (
+            <div className="relative overflow-hidden rounded-3xl border border-[#F2C7CB] bg-[#FCE8EB] p-6">
+              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#8B1E2D] via-[#c99042] to-[#8B1E2D]" />
+              <div className="absolute -right-6 -bottom-6 w-28 h-28 rounded-full bg-[#8B1E2D]/5" />
+              <div className="flex items-center gap-4 relative z-10">
+                <div className="w-10 h-10 rounded-2xl bg-white border border-[#F2C7CB] flex items-center justify-center text-lg shadow-sm flex-shrink-0">
+                  <img src="/images/icon-trophy.png" alt="trophy" className="w-4 h-4" style={{filter: 'sepia(1) hue-rotate(-10deg) saturate(2)'}} />
+                </div>
+                <div className="flex-1">
+                  <p className="font-black text-[#8B1E2D] text-[13px] uppercase tracking-widest mb-0.5">
+                    Sudah Diterima?
+                  </p>
+                  <p className="text-[12px] text-[#B66A74] font-medium leading-relaxed">
+                    Tandai untuk melacak progres karirmu.
+                  </p>
+                </div>
+                <button
+                  onClick={() => {
+                    onMarkAccepted(job);
+                    onClose();
+                  }}
+                  className="flex-shrink-0 w-12 h-12 rounded-2xl bg-[#F7D7DA] flex items-center justify-center shadow-sm hover:bg-[#e8b8bc] transition-all duration-300"
+                >
+                  <img
+                    src="/images/check-list.png"
+                    alt="save"
+                    className="w-6 h-6"
+                    style={{filter: 'sepia(1) hue-rotate(-10deg) saturate(1.5)'}}
+                  />
+                </button>
+              </div>
+            </div>
           ) : (
             <div className="bg-gradient-to-r from-emerald-50 to-emerald-100/50 border border-emerald-200/60 rounded-3xl p-6 flex items-center gap-5 shadow-sm">
               <div className="w-14 h-14 rounded-2xl bg-emerald-500 flex items-center justify-center text-white shadow-lg shadow-emerald-500/30">
@@ -497,7 +574,25 @@ function JobDetailModal({
               onClick={() => onToggleSave(job)}
               className={`w-full py-4 text-xs font-black uppercase tracking-widest border-2 transition-all rounded-2xl shadow-sm hover:shadow-md hover:-translate-y-1 ${isSaved ? 'bg-gradient-to-r from-[#6b1020] to-[#8b1a2e] text-white border-maroon' : 'bg-white text-maroon border-maroon hover:bg-maroon hover:text-white'}`}
             >
-              {isSaved ? '🔖 Lowongan Tersimpan' : '🔖 Simpan Lowongan Ini'}
+              {isSaved ? (
+                <>
+                  <img
+                    src="/images/icon-save.png"
+                    alt="save"
+                    className="w-4 h-4 inline-block mr-2"
+                  />{' '}
+                  Lowongan Tersimpan
+                </>
+              ) : (
+                <>
+                  <img
+                    src="/images/icon-save.png"
+                    alt="save"
+                    className="w-4 h-4 inline-block mr-2"
+                  />{' '}
+                  Simpan Lowongan Ini
+                </>
+              )}
             </button>
           </div>
         </div>
@@ -509,51 +604,40 @@ function JobDetailModal({
 // ─── ACCEPTED CARD ────────────────────────────────────────────────────────────
 function AcceptedCard({ job, onRemove }) {
   return (
-    <div className="bg-white/80 backdrop-blur-md border border-gray-100 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.08)] hover:border-maroon/30 transition-all group overflow-hidden rounded-3xl">
+    <div className="bg-white border border-gray-100 shadow-sm hover:shadow-md transition-all overflow-hidden rounded-2xl">
       <div className="flex">
-        <div className="w-2.5 bg-gradient-to-b from-emerald-400 to-emerald-600 flex-shrink-0" />
-        <div className="flex-1 p-6">
-          <div className="flex items-start justify-between gap-4">
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-3 mb-3">
-                <span className="inline-flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest bg-emerald-50 text-emerald-700 border border-emerald-200/60 px-3 py-1 rounded-full">
-                  <svg
-                    className="w-3 h-3"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={3}
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                  </svg>
-                  Accepted
-                </span>
-                <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">
-                  {job.acceptedDate}
-                </span>
-              </div>
-              <h3 className="font-black text-gray-900 text-lg leading-tight truncate">
-                {job.title}
-              </h3>
-              <p className="text-sm text-gray-500 mt-1 font-medium">
-                {job.company} · <span className="text-maroon font-black">{job.salary}</span>
-              </p>
-              <div className="flex items-center gap-2 mt-2">
-                <span className="text-xs bg-gray-50 px-2 py-1 rounded-md text-gray-500 font-semibold border border-gray-100">
-                  📍 {job.location}
-                </span>
-                <span className="text-xs bg-gray-50 px-2 py-1 rounded-md text-gray-500 font-semibold border border-gray-100">
-                  {job.type}
-                </span>
-              </div>
+        <div className="w-1.5 bg-gradient-to-b from-emerald-400 to-emerald-600 flex-shrink-0" />
+        <div className="flex-1 p-4">
+          {/* Baris atas: icon + badge + hapus */}
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-9 h-9 rounded-lg bg-gray-50 border border-gray-100 flex items-center justify-center flex-shrink-0">
+              <img
+                src="/icon/icon-gedung.png"
+                alt="perusahaan"
+                className="w-5 h-5 object-contain"
+              />
+            </div>
+            <div className="flex items-center gap-2 flex-1">
+              <span className="inline-flex items-center gap-1 text-[9px] font-black uppercase tracking-widest bg-emerald-50 text-emerald-700 border border-emerald-200/60 px-2 py-0.5 rounded-full">
+                <svg
+                  className="w-2.5 h-2.5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={3}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+                Accepted
+              </span>
+              <span className="text-[10px] text-gray-400 font-bold">{job.acceptedDate}</span>
             </div>
             <button
               onClick={onRemove}
-              title="Hapus dari riwayat"
-              className="text-gray-300 hover:text-red-500 transition-colors flex-shrink-0 p-3 hover:bg-red-50 rounded-2xl border border-transparent hover:border-red-100"
+              className="text-gray-300 hover:text-red-400 transition-colors p-1 rounded-lg hover:bg-red-50"
             >
               <svg
-                className="w-5 h-5"
+                className="w-3.5 h-3.5"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -563,6 +647,57 @@ function AcceptedCard({ job, onRemove }) {
               </svg>
             </button>
           </div>
+          {/* Info */}
+          <h3 className="font-black text-gray-900 text-base leading-tight">{job.title}</h3>
+          <p className="text-sm text-gray-500 font-medium mt-0.5 flex items-center gap-1">
+            {job.company}
+            <span className="text-maroon font-black ml-1 flex items-center gap-0.5">
+              <img src="/icon/icon-gaji.png" alt="gaji" className="w-3 h-3" />
+              {job.salary}
+            </span>
+          </p>
+          {/* Lokasi + tipe */}
+          <div className="flex items-center gap-2 mt-2">
+            <span className="text-[11px] bg-gray-50 px-3 py-1 rounded-lg text-gray-500 font-semibold border border-gray-100">
+              {job.location}
+            </span>
+            {job.type && (
+              <span className="text-[11px] bg-gray-50 px-3 py-1 rounded-lg text-gray-500 font-semibold border border-gray-100">
+                {job.type}
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── SKELETON CARD (for loading state) ──────────────────────────────────────
+function SkeletonCard() {
+  return (
+    <div className="bg-white/90 backdrop-blur-md rounded-[32px] overflow-hidden border border-white shadow-[0_8px_30px_rgba(0,0,0,0.04)] flex flex-col pb-1 relative min-h-[480px]">
+      <div className="relative h-[200px] overflow-hidden p-2 flex-shrink-0">
+        <div className="relative w-full h-full rounded-[24px] overflow-hidden bg-gray-200 skeleton" />
+      </div>
+      <div className="px-4 py-3 flex flex-col flex-1">
+        <div className="h-5 w-20 bg-gray-200 rounded-lg mb-2 skeleton" />
+        <div className="h-6 bg-gray-200 rounded-lg mb-1 skeleton w-3/4" />
+        <div className="h-4 bg-gray-200 rounded-lg mb-3 skeleton w-1/2" />
+        <div className="flex gap-2 mb-3">
+          <div className="h-6 w-16 bg-gray-200 rounded-lg skeleton" />
+          <div className="h-6 w-20 bg-gray-200 rounded-lg skeleton" />
+        </div>
+        <div className="flex gap-2 mb-4">
+          <div className="h-6 w-24 bg-gray-200 rounded-md skeleton" />
+          <div className="h-6 w-20 bg-gray-200 rounded-md skeleton" />
+        </div>
+        <div className="flex items-end justify-between mt-auto pt-3 border-t border-gray-100">
+          <div>
+            <div className="h-3 w-16 bg-gray-200 rounded skeleton mb-1" />
+            <div className="h-5 w-28 bg-gray-200 rounded skeleton" />
+          </div>
+          <div className="h-10 w-10 bg-gray-200 rounded-2xl skeleton" />
         </div>
       </div>
     </div>
@@ -573,21 +708,21 @@ function AcceptedCard({ job, onRemove }) {
 function JobCard({ job, savedJobs, onSave, onSelect }) {
   const isSaved = savedJobs.some((s) => s.id === job.id);
   const catIcon = {
-    Kreatif: '💼',
-    IT: '💻',
-    'F&B': '☕',
-    Pendidikan: '📚',
-    Logistik: '📦',
-    Kesehatan: '🏥',
-    Lainnya: '💼',
+    Kreatif: '/images/kreatif.png',
+    IT: '/images/it.png',
+    'F&B': '/images/fnb.png',
+    Pendidikan: '/images/pendidikan.png',
+    Logistik: '/images/logistik.png',
+    Kesehatan: '/images/kesehatan.png',
+    Lainnya: '/images/lainnya.png',
   };
 
   return (
-    <div className="bg-white/90 backdrop-blur-md rounded-[32px] overflow-hidden hover:shadow-[0_16px_40px_rgba(139,24,42,0.08)] hover:-translate-y-1 transition-all group border border-white shadow-[0_8px_30px_rgba(0,0,0,0.04)] flex flex-col pb-3 relative">
+    <div className="bg-white/90 backdrop-blur-md rounded-[32px] overflow-hidden hover:shadow-[0_20px_50px_rgba(139,24,42,0.12)] hover:-translate-y-2 transition-all duration-300 group border border-white shadow-[0_8px_30px_rgba(0,0,0,0.04)] flex flex-col pb-1 relative min-h-[480px] w-full max-w-full overflow-hidden">
       {/* Subtle top border gradient */}
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-maroon-light to-[#d7bc9d] opacity-0 group-hover:opacity-100 transition-opacity z-10" />
 
-      <div className="relative h-40 overflow-hidden p-3">
+      <div className="relative h-[200px] overflow-hidden p-2 flex-shrink-0">
         <div className="relative w-full h-full rounded-[24px] overflow-hidden shadow-inner">
           <img
             src={job.image || 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=400'}
@@ -604,31 +739,30 @@ function JobCard({ job, savedJobs, onSave, onSelect }) {
               e.stopPropagation();
               onSave(job);
             }}
-            className={`absolute top-3 right-3 w-9 h-9 rounded-full flex items-center justify-center shadow-md transition-all text-sm backdrop-blur-md border ${isSaved ? 'bg-maroon text-white border-maroon' : 'bg-white/90 text-gray-400 hover:text-maroon border-white hover:bg-white'}`}
+            className={`absolute top-3 right-3 w-9 h-9 rounded-full flex items-center justify-center shadow-md transition-all duration-300 text-sm backdrop-blur-md border ${isSaved ? 'bg-maroon text-white border-maroon' : 'bg-white/90 text-gray-400 hover:text-maroon border-white hover:bg-white'}`}
           >
-            🔖
+            <img src="/images/icon-save.png" alt="save" className="w-4 h-4" />
           </button>
         </div>
       </div>
-      <div className="px-6 py-3 flex flex-col flex-1">
-        <div className="inline-flex items-center gap-1.5 bg-gradient-to-r from-[#fcf4e8] to-white border border-[#f0e4d2] text-[#c99042] px-3.5 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-wider mb-3 w-fit shadow-sm">
-          <span className="text-[12px]">{catIcon[job.category] || '💼'}</span> {job.category}
+      <div className="px-4 py-3 flex flex-col flex-1">
+        <div className="inline-flex items-center gap-1.5 bg-gradient-to-r from-[#fcf4e8] to-white border border-[#f0e4d2] text-[#c99042] px-3.5 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-wider mb-2 w-fit shadow-sm">
+          <img
+            src={catIcon[job.category] || '💼'}
+            alt={job.category}
+            className="w-4 h-4 object-contain"
+          />{' '}
+          {job.category}
         </div>
-        <h3 className="font-black text-gray-900 text-[18px] leading-tight mb-1.5 line-clamp-2">
+        <h3 className="font-black text-gray-900 text-[17px] leading-tight mb-1 line-clamp-2 min-h-[44px] break-words hyphens-auto">
           {job.title}
         </h3>
-        <p className="text-gray-500 text-[13px] font-semibold mb-4">{job.company}</p>
+        <p className="text-gray-500 text-[13px] font-semibold mb-3 flex items-center gap-2">
+          <img src="/images/icon-gedung.png" alt="perusahaan" className="w-4 h-4" />
+          <span className="truncate">{job.company}</span>
+        </p>
 
-        <div className="flex items-center gap-3 text-[11px] text-gray-500 mb-5 font-bold uppercase tracking-wider">
-          <span className="flex items-center gap-1.5 bg-gray-50 px-2.5 py-1 rounded-md border border-gray-100">
-            <span className="text-maroon">📍</span> {job.location}
-          </span>
-          <span className="flex items-center gap-1.5 bg-gray-50 px-2.5 py-1 rounded-md border border-gray-100">
-            <span className="text-maroon">⏰</span> {job.hours}
-          </span>
-        </div>
-
-        <div className="flex flex-wrap gap-2 mb-6">
+        <div className="flex flex-wrap gap-2 mb-3 min-h-[28px]">
           {(Array.isArray(job.skills) ? job.skills : job.skills.split(',')).slice(0, 2).map((s) => (
             <span
               key={s}
@@ -639,21 +773,32 @@ function JobCard({ job, savedJobs, onSave, onSelect }) {
           ))}
         </div>
 
-        <div className="flex items-end justify-between mt-auto pt-5 border-t border-gray-100/80">
+        <div className="flex items-center gap-2 text-[11px] text-gray-500 mb-4 font-bold uppercase tracking-wider flex-wrap">
+          <span className="flex items-center gap-1.5 bg-gray-50 px-2.5 py-1 rounded-md border border-gray-100">
+            <img src="/images/icon-location.png" alt="location" className="w-4 h-4" />
+            {job.location}
+          </span>
+          <span className="flex items-center gap-1.5 bg-gray-50 px-2.5 py-1 rounded-md border border-gray-100">
+            <img src="/images/icon-hours.png" alt="hours" className="w-4 h-4" /> {job.hours}
+          </span>
+        </div>
+
+        <div className="flex items-end justify-between mt-auto pt-3 border-t border-gray-100/80">
           <div>
-            <div className="text-[9px] text-gray-400 font-black uppercase tracking-widest mb-1">
+            <div className="text-[10px] text-gray-400 font-black uppercase tracking-widest mb-1">
               Gaji mulai dari
             </div>
-            <div className="font-black text-maroon text-[15px]">
-              {job.salary}{' '}
-              <span className="text-[9px] text-gray-400 font-bold ml-1 border-l border-gray-200 pl-2 uppercase">
+            <div className="font-black text-maroon text-[15px] flex items-center gap-1.5">
+              <img src="/images/icon-gaji.png" alt="gaji" className="w-5 h-5" />
+              {job.salary}
+              <span className="text-[10px] text-gray-400 font-bold ml-0 border-l border-gray-200 pl-2 uppercase">
                 Min. {job.minAge} thn
               </span>
             </div>
           </div>
           <button
             onClick={() => onSelect(job)}
-            className="w-11 h-11 bg-gradient-to-br from-[#6b1020] to-[#8b1a2e] text-white rounded-2xl flex items-center justify-center hover:shadow-[0_8px_16px_rgba(61,10,20,0.4)] hover:-translate-y-1 transition-all shadow-md text-lg"
+            className="w-10 h-10 bg-gradient-to-br from-[#6b1020] to-[#8b1a2e] text-white rounded-2xl flex items-center justify-center hover:shadow-[0_8px_16px_rgba(61,10,20,0.4)] hover:-translate-y-1 transition-all duration-300 shadow-md text-lg"
           >
             <svg
               className="w-5 h-5"
@@ -666,6 +811,94 @@ function JobCard({ job, savedJobs, onSave, onSelect }) {
             </svg>
           </button>
         </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── SLIM PREMIUM GLASS FRAME ────────────────────────────────────────────────
+function SlimGlassFrame({ children }) {
+  return (
+    <div className="slim-glass-wrapper">
+      {/* Subtle Ambient Glows */}
+      <div className="ambient-haze">
+        <div className="haze haze-1" />
+        <div className="haze haze-2" />
+      </div>
+
+      {/* Layer 1: Back Acrylic - Very Subtle */}
+      <div className="acrylic-layer-back">
+        <div className="layer-fill" />
+        <div className="layer-shine-top" />
+        <div className="layer-shine-left" />
+      </div>
+
+      {/* Layer 2: Mid Acrylic - Subtle */}
+      <div className="acrylic-layer-mid">
+        <div className="layer-fill" />
+        <div className="layer-shine-top" />
+        <div className="layer-shine-left" />
+      </div>
+
+      {/* Layer 3: Front Acrylic - Light */}
+      <div className="acrylic-layer-front">
+        <div className="layer-fill" />
+        <div className="layer-shine-top" />
+        <div className="layer-shine-left" />
+      </div>
+
+      {/* Main Frame */}
+      <div className="slim-frame">
+        {/* Subtle Border Glow */}
+        <div className="slim-border">
+          <div className="bd-top" />
+          <div className="bd-bottom" />
+          <div className="bd-left" />
+          <div className="bd-right" />
+        </div>
+
+        {/* Inner Reflection */}
+        <div className="inner-glow" />
+        <div className="inner-shine" />
+
+        {/* Content */}
+        <div className="frame-inner">{children}</div>
+      </div>
+
+      {/* Light Accents */}
+      <div className="light-accent">
+        <div className="accent-streak as-1" />
+        <div className="accent-streak as-2" />
+        <div className="accent-streak as-3" />
+      </div>
+
+      {/* Mini Sparkles */}
+      <div className="mini-sparkle">
+        <div className="spark sp-1">
+          <svg viewBox="0 0 16 16" fill="none">
+            <path d="M8 0L9 5.6L14.4 8L9 10.4L8 16L7 10.4L1.6 8L7 5.6L8 0Z" fill="currentColor" />
+          </svg>
+        </div>
+        <div className="spark sp-2">
+          <svg viewBox="0 0 16 16" fill="none">
+            <path d="M8 0L9 5.6L14.4 8L9 10.4L8 16L7 10.4L1.6 8L7 5.6L8 0Z" fill="currentColor" />
+          </svg>
+        </div>
+        <div className="spark sp-3">
+          <svg viewBox="0 0 16 16" fill="none">
+            <path d="M8 0L9 5.6L14.4 8L9 10.4L8 16L7 10.4L1.6 8L7 5.6L8 0Z" fill="currentColor" />
+          </svg>
+        </div>
+        <div className="spark sp-4">
+          <svg viewBox="0 0 16 16" fill="none">
+            <path d="M8 0L9 5.6L14.4 8L9 10.4L8 16L7 10.4L1.6 8L7 5.6L8 0Z" fill="currentColor" />
+          </svg>
+        </div>
+      </div>
+
+      {/* Soft Shadow */}
+      <div className="soft-shadow">
+        <div className="shade shade-1" />
       </div>
     </div>
   );
@@ -684,23 +917,18 @@ function HeroDecoration() {
 // ─── MAIN APP ─────────────────────────────────────────────────────────────────
 export default function App() {
   const [jobs, setJobs] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [isLoading, setLoading] = useState(true);
+  const [, setError] = useState(null);
   const [acceptedJobs, setAcceptedJobs] = useState([]);
+  const [allAcceptedJobs, setAllAcceptedJobs] = useState([]);
   const [savedJobs, setSavedJobs] = useState([]);
 
-  // Fetch jobs from API on mount
-  useEffect(() => {
-    fetchJobs();
-  }, []);
-
-  const fetchJobs = async () => {
+  const fetchJobs = useCallback(async () => {
     try {
-      setLoading(true);
       const res = await fetch(`${API_URL}/jobs`);
       if (!res.ok) throw new Error('Failed to fetch jobs');
       const data = await res.json();
-      setJobs(data);
+      setJobs(data.map(normalizeJob));
       setError(null);
     } catch (err) {
       setError(err.message);
@@ -708,13 +936,113 @@ export default function App() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  const normalizeJob = useCallback(
+    (job) => ({
+      ...job,
+      // Title - ensure proper field mapping
+      title: job.title || job.judul || 'Judul lowongan belum tersedia',
+      // Company name
+      company: job.company || job.perusahaan || 'Perusahaan belum tersedia',
+      // Location
+      location: job.location || job.lokasi || 'Lokasi belum tersedia',
+      // Work type (Remote, Onsite, Hybrid)
+      type: job.type || job.tipe || 'Part-time',
+      // Job category
+      category: job.category || job.kategori || 'Umum',
+      // Skills as array
+      skills: Array.isArray(job.skills)
+        ? job.skills
+        : (job.skills || job.skill || job.skill_required || 'Tidak disebutkan').toString().split(','),
+      // Working hours
+      hours: job.hours || job.jam_kerja || job.jamKerja || 'Jam kerja belum tersedia',
+      // Minimum age
+      minAge: job.minAge || job.minimal_umur || job.usia_minimal || 18,
+      // Salary
+      salary: job.salary || job.gaji || 'Gaji belum tersedia',
+      // Description
+      description: job.description || job.deskripsi || 'Deskripsi belum tersedia',
+      // Contact email
+      contactEmail: job.contactEmail || job.email_kontak || job.email || '',
+      contactPhone: job.contactPhone || job.whatsapp || job.no_wa || '',
+      image:
+        job.image ||
+        job.foto ||
+        'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=400',
+      createdAt: job.createdAt || job.created_at || '',
+    }),
+    []
+  );
+
+  const fetchSavedJobs = useCallback(async () => {
+    const storedUser = JSON.parse(localStorage.getItem('skillshift_user') || 'null');
+    const userId = storedUser?.id;
+    if (!userId) return;
+
+    try {
+      const res = await fetch(`${API_URL}/saved/${userId}`);
+      if (!res.ok) throw new Error('Gagal mengambil data tersimpan');
+
+      const data = await res.json();
+      setSavedJobs(data.map(normalizeJob));
+    } catch (err) {
+      console.error('Error fetching saved jobs:', err);
+    }
+  }, [normalizeJob]);
+
+  const fetchAcceptedJobs = useCallback(async () => {
+    const storedUser = JSON.parse(localStorage.getItem('skillshift_user') || 'null');
+
+    const userId = storedUser?.id;
+
+    if (!userId) {
+      setAcceptedJobs([]);
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API_URL}/accepted/${userId}`);
+
+      if (!res.ok) throw new Error('Gagal mengambil data diterima');
+
+      const data = await res.json();
+
+      setAcceptedJobs(
+        data.map((job) => ({
+          ...normalizeJob(job),
+          acceptedDate: new Date().toLocaleDateString('id-ID'),
+          currentStep: 0,
+        }))
+      );
+    } catch (err) {
+      console.error('Error fetching accepted jobs:', err);
+    }
+  }, [normalizeJob]);
+  const fetchAllAcceptedJobs = useCallback(async () => {
+    try {
+      const res = await fetch(`${API_URL}/admin/accepted`);
+      if (!res.ok) throw new Error('Gagal mengambil data accepted');
+      const data = await res.json();
+      setAllAcceptedJobs(data);
+    } catch (err) {
+      console.error('Error fetching all accepted jobs:', err);
+    }
+  }, []);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchJobs();
+    fetchSavedJobs();
+    fetchAcceptedJobs();
+    fetchAllAcceptedJobs();
+  }, [fetchJobs, fetchSavedJobs, fetchAcceptedJobs, fetchAllAcceptedJobs]);
 
   const [activeTab, setActiveTab] = useState('home');
   const jobsRef = useRef(null);
 
   const [searchTerm, setSearchTerm] = useState('');
-  const [sortBy, setSortBy] = useState('newest');
+  const [sortBy] = useState('newest');
   const [filterType, setFilterType] = useState('Semua');
   const [filterHours, setFilterHours] = useState('Semua');
   const [filterCategory, setFilterCategory] = useState(['Semua']);
@@ -729,6 +1057,7 @@ export default function App() {
 
   const [adminImagePreview, setAdminImagePreview] = useState(null);
   const adminImageInputRef = useRef(null);
+  const [editingJobId, setEditingJobId] = useState(null);
   const [adminForm, setAdminForm] = useState({
     title: '',
     company: '',
@@ -747,25 +1076,158 @@ export default function App() {
 
   // Profile state kept purely for backend/modal data needs, UI for CV Builder is removed.
   const [profile, setProfile] = useState({
-    name: 'Pelamar',
-    nim: '',
-    jurusan: '',
+    name: 'Pengguna SkillShift',
+    universitas: 'Belum diisi',
+    jurusan: 'Belum diisi',
     email: '',
-    phone: '',
-    skills: '',
-    pengalaman: '',
+    phone: 'Belum diisi',
+    linkedin: 'Belum diisi',
+    lokasi: 'Belum diisi',
+    tanggalLahir: '',
+    bahasa: 'Bahasa Indonesia',
+    tentang: 'Belum ada deskripsi profil.',
+    skills: [],
+    pendidikan: [],
+    pengalaman: [],
+    foto: null,
+    tersedia: true,
   });
+
+  const [editSection, setEditSection] = useState(null);
+  const [editTemp, setEditTemp] = useState({});
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-const [searchInputVal, setSearchInputVal] = useState('');
+  const [searchInputVal, setSearchInputVal] = useState('');
+
+  // Login state
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userType, setUserType] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null); // 'admin' or 'user'
+  /* eslint-disable react-hooks/set-state-in-effect */
+  useEffect(() => {
+    const savedUser = localStorage.getItem('skillshift_user');
+
+    if (!savedUser) return;
+
+    try {
+      const parsedUser = JSON.parse(savedUser);
+      const finalType = parsedUser.role === 'admin' ? 'admin' : 'user';
+
+      const savedProfile = localStorage.getItem(`skillshift_profile_${parsedUser.email}`);
+
+      if (savedProfile) {
+        const parsedProfile = JSON.parse(savedProfile);
+
+        setProfile((prev) => ({
+          ...prev,
+          ...parsedProfile,
+          name: parsedProfile.name || parsedUser.nama || 'Pengguna SkillShift',
+          email: parsedUser.email || parsedProfile.email || '',
+        }));
+      } else {
+        setProfile((prev) => ({
+          ...prev,
+          name: parsedUser.nama || 'Pengguna SkillShift',
+          email: parsedUser.email || '',
+        }));
+      }
+
+      setIsLoggedIn(true);
+      setUserType(finalType);
+      setCurrentUser(parsedUser);
+      setIsAdminAuth(finalType === 'admin');
+      // Admin users should see admin panel, regular users see home
+      setActiveTab(finalType === 'admin' ? 'admin' : 'home');
+    } catch (err) {
+      console.error('Gagal membaca data login:', err);
+      localStorage.removeItem('skillshift_user');
+    }
+  }, []);
+  useEffect(() => {
+    if (!isLoggedIn || !profile.email) return;
+
+    localStorage.setItem(`skillshift_profile_${profile.email}`, JSON.stringify(profile));
+  }, [profile, isLoggedIn]);
+
+  // Handle login success from LoginPage
+  const handleLoginSuccess = (type) => {
+    const storedUser = JSON.parse(localStorage.getItem('skillshift_user') || 'null');
+
+    if (!storedUser || !storedUser.role) {
+      setIsLoggedIn(false);
+      setUserType(null);
+      setActiveTab('login');
+      return;
+    }
+
+    const finalType = storedUser.role === 'admin' ? 'admin' : 'user';
+
+    if (type !== finalType) {
+      setIsLoggedIn(false);
+      setUserType(null);
+      setActiveTab('login');
+      return;
+    }
+
+    const savedProfile = localStorage.getItem(`skillshift_profile_${storedUser.email}`);
+
+    if (savedProfile) {
+      const parsedProfile = JSON.parse(savedProfile);
+
+      setProfile((prev) => ({
+        ...prev,
+        ...parsedProfile,
+        name: parsedProfile.name || storedUser.nama || 'Pengguna SkillShift',
+        email: storedUser.email || parsedProfile.email || '',
+      }));
+    } else {
+      setProfile((prev) => ({
+        ...prev,
+        name: storedUser.nama || 'Pengguna SkillShift',
+        email: storedUser.email || '',
+      }));
+    }
+
+    setIsLoggedIn(true);
+    setUserType(finalType);
+    setCurrentUser(storedUser);
+    setIsAdminAuth(finalType === 'admin');
+    // Navigate to correct page based on user type
+    setActiveTab(finalType === 'admin' ? 'admin' : 'home');
+  };
+
+  // Handle logout
+  const handleLogout = () => {
+    localStorage.removeItem('skillshift_user');
+
+    setProfile({
+      name: 'Pengguna SkillShift',
+      universitas: 'Belum diisi',
+      jurusan: 'Belum diisi',
+      email: '',
+      phone: 'Belum diisi',
+      linkedin: 'Belum diisi',
+      lokasi: 'Belum diisi',
+      tanggalLahir: '',
+      bahasa: 'Bahasa Indonesia',
+      tentang: 'Belum ada deskripsi profil.',
+      skills: [],
+      pendidikan: [],
+      pengalaman: [],
+      foto: null,
+      tersedia: true,
+    });
+
+    setIsLoggedIn(false);
+    setUserType(null);
+    setCurrentUser(null);
+    setIsAdminAuth(false);
+    setActiveTab('login');
+  };
 
   const allTypes = useMemo(
     () => ['Semua', ...new Set(jobs.map((j) => j.type).filter(Boolean))],
-    [jobs]
-  );
-  const allHours = useMemo(
-    () => ['Semua', ...new Set(jobs.map((j) => j.hours).filter(Boolean))],
     [jobs]
   );
   const allCategories = useMemo(
@@ -787,10 +1249,6 @@ const [searchInputVal, setSearchInputVal] = useState('');
         )
       ),
     ],
-    [jobs]
-  );
-  const allPositions = useMemo(
-    () => ['Semua', ...new Set(jobs.map((j) => j.title).filter(Boolean))],
     [jobs]
   );
 
@@ -831,10 +1289,63 @@ const [searchInputVal, setSearchInputVal] = useState('');
   const handleAdminImageUpload = (e) => {
     const file = e.target.files[0];
     if (!file) return;
+
+    // Check file size first
+    if (file.size > 5 * 1024 * 1024) {
+      // 5MB limit
+      alert('Ukuran file terlalu besar. Maksimal 5MB.');
+      return;
+    }
+
     const reader = new FileReader();
     reader.onload = (ev) => {
-      setAdminImagePreview(ev.target.result);
-      setAdminForm((f) => ({ ...f, image: ev.target.result }));
+      try {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const maxWidth = 600;
+          const maxHeight = 400;
+          let width = img.width;
+          let height = img.height;
+
+          // Calculate new dimensions
+          if (width > maxWidth) {
+            height = (height * maxWidth) / width;
+            width = maxWidth;
+          }
+          if (height > maxHeight) {
+            width = (width * maxHeight) / height;
+            height = maxHeight;
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+
+          // Compress to JPEG with 0.5 quality (smaller file)
+          const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.5);
+
+          console.log('Original size:', (file.size / 1024).toFixed(2), 'KB');
+          console.log('Compressed size:', (compressedDataUrl.length / 1024).toFixed(2), 'KB');
+
+          setAdminImagePreview(compressedDataUrl);
+          setAdminForm((f) => ({ ...f, image: compressedDataUrl }));
+        };
+        img.onerror = () => {
+          // Fallback: use original if compression fails
+          console.log('Compression failed, using original');
+          setAdminImagePreview(ev.target.result);
+          setAdminForm((f) => ({ ...f, image: ev.target.result }));
+        };
+        img.src = ev.target.result;
+      } catch (err) {
+        console.error('Image processing error:', err);
+        alert('Gagal memproses gambar. Coba gunakan foto lain.');
+      }
+    };
+    reader.onerror = () => {
+      alert('Gagal membaca file. Coba gunakan foto lain.');
     };
     reader.readAsDataURL(file);
   };
@@ -842,19 +1353,31 @@ const [searchInputVal, setSearchInputVal] = useState('');
   const handleSaveAdminJob = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`${API_URL}/jobs`, {
-        method: 'POST',
+      const method = editingJobId ? 'PUT' : 'POST';
+      const url = editingJobId ? `${API_URL}/jobs/${editingJobId}` : `${API_URL}/jobs`;
+
+      const res = await fetch(url, {
+        method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...adminForm,
-          image: adminForm.image || 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800',
+          image:
+            adminForm.image || 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800',
         }),
       });
-      if (!res.ok) throw new Error('Failed to save job');
-      const newJob = await res.json();
-      setJobs([newJob, ...jobs]);
+      if (!res.ok) throw new Error(editingJobId ? 'Failed to update job' : 'Failed to save job');
+
+      const responseJob = await res.json();
+
+      if (editingJobId) {
+        setJobs(jobs.map((j) => (j.id === editingJobId ? responseJob : j)));
+      } else {
+        setJobs([responseJob, ...jobs]);
+      }
+
       setIsAdminModalOpen(false);
       setAdminImagePreview(null);
+      setEditingJobId(null);
       setAdminForm({
         title: '',
         company: '',
@@ -872,7 +1395,11 @@ const [searchInputVal, setSearchInputVal] = useState('');
       });
     } catch (err) {
       console.error('Error saving job:', err);
-      alert('Gagal menyimpan lowongan: ' + err.message);
+      alert(
+        editingJobId
+          ? 'Gagal mengupdate lowongan: ' + err.message
+          : 'Gagal menyimpan lowongan: ' + err.message
+      );
     }
   };
 
@@ -887,29 +1414,119 @@ const [searchInputVal, setSearchInputVal] = useState('');
     }
   };
 
-  const toggleSave = (job) =>
-    setSavedJobs((prev) =>
-      prev.find((s) => s.id === job.id) ? prev.filter((s) => s.id !== job.id) : [...prev, job]
-    );
+  const handleEditJob = (job) => {
+    setEditingJobId(job.id);
+    setAdminForm({
+      title: job.title || '',
+      company: job.company || '',
+      location: job.location || '',
+      type: job.type || 'Onsite',
+      category: job.category || 'F&B',
+      skills: job.skills || '',
+      hours: job.hours || '',
+      minAge: job.minAge || 18,
+      salary: job.salary || '',
+      description: job.description || '',
+      contactEmail: job.contactEmail || '',
+      contactPhone: job.contactPhone || '',
+      image: job.image || '',
+    });
+    setAdminImagePreview(job.image || null);
+    setIsAdminModalOpen(true);
+  };
 
-  const handleMarkAccepted = (job) => {
-    if (!acceptedJobs.find((a) => a.id === job.id))
-      setAcceptedJobs([
-        ...acceptedJobs,
-        { ...job, acceptedDate: new Date().toLocaleDateString('id-ID'), currentStep: 0 },
-      ]);
-    setActiveTab('history');
+  const toggleSave = async (job) => {
+    const storedUser = JSON.parse(localStorage.getItem('skillshift_user') || 'null');
+    const userId = storedUser?.id;
+    if (!userId) {
+      alert('Login dulu untuk menyimpan lowongan!');
+      setActiveTab('login');
+      return;
+    }
+    const isSaved = savedJobs.some((s) => s.id === job.id);
+
+    try {
+      if (isSaved) {
+        const res = await fetch(`${API_URL}/saved/${userId}/${job.id}`, {
+          method: 'DELETE',
+        });
+
+        if (!res.ok) throw new Error('Gagal menghapus lowongan dari tersimpan');
+
+        setSavedJobs((prev) => prev.filter((s) => s.id !== job.id));
+      } else {
+        const res = await fetch(`${API_URL}/saved`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            id_user: userId,
+            id_lowongan: job.id,
+          }),
+        });
+
+        if (!res.ok) throw new Error('Gagal menyimpan lowongan');
+
+        setSavedJobs((prev) => [...prev, job]);
+      }
+    } catch (err) {
+      console.error('Error toggle saved job:', err);
+      alert(err.message);
+    }
+  };
+
+  const handleMarkAccepted = async (job) => {
+    const storedUser = JSON.parse(localStorage.getItem('skillshift_user') || 'null');
+    const userId = currentUser?.id || storedUser?.id;
+    if (!userId) {
+      alert('Login dulu untuk menyimpan lowongan!');
+      setActiveTab('login');
+      return;
+    }
+    const isAccepted = acceptedJobs.some((a) => a.id === job.id);
+
+    try {
+      if (!isAccepted) {
+        const res = await fetch(`${API_URL}/accepted`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            id_user: userId,
+            id_lowongan: job.id,
+          }),
+        });
+
+        if (!res.ok) throw new Error('Gagal menandai lowongan sebagai diterima');
+
+        setAcceptedJobs((prev) => [
+          ...prev,
+          {
+            ...job,
+            acceptedDate: new Date().toLocaleDateString('id-ID'),
+            currentStep: 0,
+          },
+        ]);
+      }
+
+      setActiveTab('history');
+    } catch (err) {
+      console.error('Error mark accepted job:', err);
+      alert(err.message);
+    }
   };
 
   const handleNavClick = (key) => {
     if (key === 'jobs') {
-  setActiveTab('jobs');
-  setSearchOpen(false);
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-    else if (key === 'admin') {
+      setActiveTab('jobs');
+      setSearchOpen(false);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (key === 'admin') {
       if (isAdminAuth) setActiveTab('admin');
       else setShowAdminPwd(true);
+    } else if (key === 'login') {
+      setActiveTab('login');
+    } else if (key === 'profile') {
+      setActiveTab('profile');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
       setActiveTab(key);
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -932,77 +1549,148 @@ const [searchInputVal, setSearchInputVal] = useState('');
 
   return (
     <div className="min-h-screen flex flex-col app-root relative">
-      {/* ── NAVBAR (Enhanced Aesthetic) ── */}
-      <nav className="nav-bar py-3 px-6 md:px-10 flex justify-between items-center sticky top-0 z-50 bg-white/80 backdrop-blur-xl shadow-[0_4px_30px_rgba(0,0,0,0.03)] border-b border-white">
-        <SkillShiftLogo onClick={() => setActiveTab('home')} small />
+      {/* ── LOGIN PAGE (Tampilkan jika tab = login dan belum login) ── */}
+      {activeTab === 'login' && !isLoggedIn && <LoginPage onLoginSuccess={handleLoginSuccess} />}
 
-        <div className="hidden md:flex items-center gap-9">
-          {[
-            { key: 'home', label: 'Beranda' },
-            { key: 'jobs', label: 'Lowongan' },
-            // Menu CV Builder Dihapus sepenuhnya
-            { key: 'saved', label: 'Tersimpan' },
-            { key: 'history', label: `Diterima (${acceptedJobs.length})` },
-            { key: 'admin', label: 'Admin Panel' },
-          ].map((item) => (
-            <button
-              key={item.key}
-              onClick={() => handleNavClick(item.key)}
-              className={`pb-1.5 pt-1.5 transition-all relative hover:text-maroon ${activeTab === item.key ? 'nav-active text-maroon' : 'nav-inactive text-gray-500'}`}
-            >
-              {item.label}
-              {activeTab === item.key && (
-                <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/4 h-[3px] bg-gradient-to-r from-maroon to-maroon-light rounded-full shadow-[0_2px_8px_rgba(61,10,20,0.5)]" />
-              )}
-            </button>
-          ))}
-        </div>
+      {/* ── NAVBAR (sembunyikan saat di halaman login) ── */}
+      {!(activeTab === 'login' && !isLoggedIn) && (
+        <nav className="nav-bar py-3 px-6 md:px-10 flex justify-between items-center sticky top-0 z-50 bg-white/80 backdrop-blur-xl shadow-[0_4px_30px_rgba(0,0,0,0.03)] border-b border-white">
+          <SkillShiftLogo onClick={() => setActiveTab('home')} small />
 
-        <div className="hidden md:flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-9">
+            {!isLoggedIn ? (
+              <>
+                {[
+                  { key: 'home', label: 'Beranda' },
+                  { key: 'jobs', label: 'Lowongan' },
+                  ...(userType !== 'admin' ? [{ key: 'saved', label: 'Tersimpan' }] : []),
+                  ...(userType !== 'admin' ? [{ key: 'history', label: 'Diterima' }] : []),
+                ].map((item) => (
+                  <button
+                    key={item.key}
+                    onClick={() => handleNavClick(item.key)}
+                    className={`pb-1.5 pt-1.5 transition-all relative hover:text-maroon ${activeTab === item.key ? 'nav-active text-maroon' : 'nav-inactive text-gray-500'}`}
+                  >
+                    {item.label}
+                    {activeTab === item.key && (
+                      <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/4 h-[3px] bg-gradient-to-r from-maroon to-maroon-light rounded-full shadow-[0_2px_8px_rgba(61,10,20,0.5)]" />
+                    )}
+                  </button>
+                ))}
+              </>
+            ) : (
+              <>
+                {[
+                  { key: 'home', label: 'Beranda' },
+                  { key: 'jobs', label: 'Lowongan' },
+                  ...(userType !== 'admin' ? [{ key: 'saved', label: 'Tersimpan' }] : []),
+                  ...(userType !== 'admin' ? [{ key: 'history', label: 'Diterima' }] : []),
+                  ...(userType === 'admin'
+                    ? [
+                        { key: 'admin-diterima', label: 'Diterima' },
+                        { key: 'admin', label: 'Admin Panel' },
+                        { key: 'admin-akun', label: 'Akun' },
+                      ]
+                    : []),
+                  ...(userType !== 'admin' ? [{ key: 'profile', label: 'Akun' }] : []),
+                ].map((item) => (
+                  <button
+                    key={item.key}
+                    onClick={() => handleNavClick(item.key)}
+                    className={`pb-1.5 pt-1.5 transition-all relative hover:text-maroon ${activeTab === item.key ? 'nav-active text-maroon' : 'nav-inactive text-gray-500'}`}
+                  >
+                    {item.label}
+                    {activeTab === item.key && (
+                      <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/4 h-[3px] bg-gradient-to-r from-maroon to-maroon-light rounded-full shadow-[0_2px_8px_rgba(61,10,20,0.5)]" />
+                    )}
+                  </button>
+                ))}
+                <div className="hidden md:flex items-center gap-4">
+                  {!isLoggedIn ? (
+                    <button
+                      onClick={() => handleNavClick('login')}
+                      className="bg-gradient-to-r from-[#6b1020] to-[#8b1a2e] text-white px-6 py-2.5 rounded-xl text-[11px] font-black uppercase tracking-wider flex items-center gap-2 shadow-[0_4px_14px_rgba(61,10,20,0.4)] hover:shadow-[0_6px_20px_rgba(61,10,20,0.5)] hover:-translate-y-0.5 transition-all"
+                    >
+                      Login
+                    </button>
+                  ) : (
+                    <button
+                      onClick={handleLogout}
+                      className="bg-gradient-to-r from-[#6b1020] to-[#8b1a2e] text-white px-5 py-2.5 text-[11px] font-semibold uppercase tracking-wider rounded-xl flex items-center gap-2 shadow-[0_4px_14px_rgba(61,10,20,0.4)] hover:shadow-[0_6px_20px_rgba(61,10,20,0.5)] hover:-translate-y-0.5 transition-all"
+                    >
+                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                      </svg>
+                      Logout
+                    </button>
+                  )}
+                </div>
+              </>
+            )}
+          </div>
+
+          <div className="hidden md:flex items-center gap-4">
+            {!isLoggedIn && (
+              <button
+                onClick={() => handleNavClick('login')}
+                className="bg-gradient-to-r from-[#6b1020] to-[#8b1a2e] text-white px-6 py-3 rounded-xl text-[12px] font-black uppercase tracking-wider flex items-center gap-2 shadow-[0_4px_14px_rgba(61,10,20,0.4)] hover:shadow-[0_6px_20px_rgba(61,10,20,0.5)] hover:-translate-y-0.5 transition-all"
+              >
+                Login
+              </button>
+            )}
+          </div>
+
           <button
-            onClick={() => {
-              alert(
-                'Notifikasi berhasil diaktifkan! ✅ Kami akan mengabari Anda jika ada lowongan baru.'
-              );
-            }}
-            className="w-10 h-10 rounded-full flex items-center justify-center transition-all bg-white border border-gray-100 shadow-sm hover:shadow-md hover:border-maroon/30 text-gray-400 hover:text-maroon"
-            title="Aktifkan Notifikasi"
+            className="md:hidden text-2xl text-gray-700 bg-white shadow-sm w-10 h-10 rounded-xl flex items-center justify-center border border-gray-100"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
-            🔔
+            ☰
           </button>
-          <button
-            onClick={() => handleNavClick('admin')}
-            className="bg-gradient-to-r from-[#6b1020] to-[#8b1a2e] text-white px-6 py-3 rounded-xl text-[12px] font-black uppercase tracking-wider flex items-center gap-2 shadow-[0_4px_14px_rgba(61,10,20,0.4)] hover:shadow-[0_6px_20px_rgba(61,10,20,0.5)] hover:-translate-y-0.5 transition-all"
-          >
-            + Post Lowongan
-          </button>
-        </div>
-
-        <button
-          className="md:hidden text-2xl text-gray-700 bg-white shadow-sm w-10 h-10 rounded-xl flex items-center justify-center border border-gray-100"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-        >
-          ☰
-        </button>
-      </nav>
+        </nav>
+      )}
 
       {mobileMenuOpen && (
-        <div className="md:hidden bg-white/95 backdrop-blur-xl border-b border-gray-100 px-6 py-4 flex flex-col gap-2 z-40 shadow-xl absolute w-full left-0 top-[72px]">
+        <div className="md:hidden bg-white/95 backdrop-blur-xl border-b border-gray-100 px-4 py-4 flex flex-col gap-2 z-40 shadow-xl absolute w-full left-0 top-[72px] max-h-[80vh] overflow-y-auto">
           {[
             { key: 'home', label: 'Beranda' },
             { key: 'jobs', label: 'Lowongan' },
-            { key: 'saved', label: 'Tersimpan' },
-            { key: 'history', label: 'Diterima' },
-            { key: 'admin', label: 'Admin Panel' },
+            ...(userType !== 'admin' ? [{ key: 'saved', label: 'Tersimpan' }] : []),
+            ...(userType !== 'admin' ? [{ key: 'history', label: 'Diterima' }] : []),
+            ...(userType === 'admin'
+              ? [
+                  { key: 'admin-diterima', label: 'Diterima' },
+                  { key: 'admin', label: 'Admin Panel' },
+                  { key: 'admin-akun', label: 'Akun' },
+                ]
+              : []),
+            ...(userType !== 'admin' ? [{ key: 'profile', label: 'Akun' }] : []),
           ].map((item) => (
             <button
               key={item.key}
               onClick={() => handleNavClick(item.key)}
-              className={`text-left text-xs font-black uppercase tracking-widest py-3.5 border-b border-gray-50/50 ${activeTab === item.key ? 'text-maroon' : 'text-gray-500'}`}
+              className={`text-left text-sm font-semibold uppercase tracking-wider py-3 border-b border-gray-100 transition-all duration-200 hover:text-maroon ${activeTab === item.key ? 'text-maroon font-bold' : 'text-gray-600'}`}
             >
               {item.label}
             </button>
           ))}
+          {!isLoggedIn ? (
+            <button
+              onClick={() => handleNavClick('login')}
+              className="text-left text-sm font-semibold uppercase tracking-wider py-3 text-white bg-gradient-to-r from-[#6b1020] to-[#8b1a2e] rounded-xl px-4 flex items-center gap-2 shadow-[0_4px_14px_rgba(61,10,20,0.4)] hover:shadow-[0_6px_20px_rgba(61,10,20,0.5)] transition-all mt-2"
+            >
+              Login
+            </button>
+          ) : (
+            <button
+              onClick={handleLogout}
+              className="text-left text-sm font-semibold uppercase tracking-wider py-3 text-white bg-gradient-to-r from-[#6b1020] to-[#8b1a2e] rounded-xl px-4 flex items-center gap-2 shadow-[0_4px_14px_rgba(61,10,20,0.4)] hover:shadow-[0_6px_20px_rgba(61,10,20,0.5)] transition-all mt-2"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
+              Logout
+            </button>
+          )}
         </div>
       )}
 
@@ -1012,6 +1700,7 @@ const [searchInputVal, setSearchInputVal] = useState('');
             setIsAdminAuth(true);
             setShowAdminPwd(false);
             setActiveTab('admin');
+            setCurrentUser({ id: 1, nama: 'Admin SkillShift', email: 'admin@skillshift.com' });
           }}
           onClose={() => setShowAdminPwd(false)}
         />
@@ -1034,7 +1723,7 @@ const [searchInputVal, setSearchInputVal] = useState('');
         <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center backdrop-blur-lg overflow-y-auto py-10 p-4">
           <div className="bg-white p-8 md:p-10 max-w-2xl w-full mx-auto shadow-[0_20px_60px_rgba(0,0,0,0.15)] animate-slide-up max-h-[90vh] overflow-y-auto rounded-[32px] border border-white">
             <h3 className="text-3xl font-black serif mb-8 text-gray-900 border-b border-gray-100 pb-4">
-              Tambah Lowongan Baru
+              {editingJobId ? 'Edit Lowongan' : 'Tambah Lowongan Baru'}
             </h3>
             <form onSubmit={handleSaveAdminJob} className="grid grid-cols-2 gap-5">
               <div className="col-span-2 mb-2">
@@ -1178,17 +1867,18 @@ const [searchInputVal, setSearchInputVal] = useState('');
               <div className="col-span-2 flex gap-4 pt-6 border-t border-gray-100 mt-2">
                 <button
                   type="submit"
-                  className="flex-1 bg-gradient-to-r from-[#6b1020] to-[#8b1a2e] text-white py-4 text-xs font-black uppercase tracking-widest hover:shadow-[0_8px_20px_rgba(61,10,20,0.4)] hover:-translate-y-1 transition-all rounded-xl"
+                  className="flex-1 bg-gradient-to-r from-[#6b1020] to-[#8b1a2e] text-white py-3 text-xs font-black uppercase tracking-widest hover:shadow-[0_8px_20px_rgba(61,10,20,0.4)] hover:-translate-y-1 transition-all rounded-lg"
                 >
-                  + Simpan Lowongan
+                  {editingJobId ? 'Update Lowongan' : 'Simpan Lowongan'}
                 </button>
                 <button
                   type="button"
                   onClick={() => {
                     setIsAdminModalOpen(false);
                     setAdminImagePreview(null);
+                    setEditingJobId(null);
                   }}
-                  className="px-10 border-2 border-gray-200 text-xs font-bold uppercase hover:bg-gray-50 hover:border-gray-300 transition-all text-gray-600 rounded-xl"
+                  className="px-8 border-2 border-gray-200 text-xs font-bold uppercase hover:bg-gray-50 hover:border-gray-300 transition-all text-gray-600 rounded-lg"
                 >
                   Batal
                 </button>
@@ -1232,113 +1922,52 @@ const [searchInputVal, setSearchInputVal] = useState('');
 
                 {/* Right Side - Floating Aesthetic Image */}
                 <div className="w-full lg:w-1/2 flex flex-col items-center">
-                  <div
-                    className="
-relative
-rounded-[34px]
-overflow-hidden
-
-border-[6px]
-border-white
-
-shadow-[0_20px_50px_rgba(0,0,0,.12)]
-
-w-full
-max-w-[520px]
-"
-                  >
+                  <SlimGlassFrame>
                     <img
-                      src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200"
-                      className="
-w-full
-h-[360px]
-object-cover
-"
+                      src="/icon/foto-utama.jpeg"
+                      className="w-full h-[200px] md:h-[360px] object-cover rounded-[24px]"
                     />
-                  </div>
+                  </SlimGlassFrame>
 
-                  <div
-                    className="
-w-full
-max-w-[520px]
-
-bg-white/80
-backdrop-blur-xl
-
-border
-border-white
-
-shadow-[0_10px_40px_rgba(0,0,0,.06)]
-
-rounded-[28px]
-
-grid
-grid-cols-3
-
-mt-5
-
-relative
-z-20
-
-overflow-hidden
-"
-                  >
+                  {/* Stats Card - Fixed height to prevent CLS */}
+                  <div className="w-full max-w-md bg-white/80 backdrop-blur-xl border border-white shadow-[0_10px_40px_rgba(0,0,0,.06)] rounded-[20px] grid grid-cols-3 mt-4 relative z-20 overflow-hidden min-h-[88px]">
                     {[
                       {
-                        icon: '💼',
+                        icon: '/images/icon-stats-lowongan.png',
                         v: jobs.length,
                         t: 'Lowongan Aktif',
                       },
-
                       {
-                        icon: '🔖',
+                        icon: '/images/icon-stats-disimpan.png',
                         v: savedJobs.length,
                         t: 'Loker Disimpan',
                       },
-
                       {
-                        icon: '📍',
+                        icon: '/images/icon-stats-kota.png',
                         v: allLocations.length - 1,
                         t: 'Kota Tersedia',
                       },
-                    ].map((i) => (
+                    ].map((i, idx) => (
                       <div
                         key={i.t}
-                        className="
-py-4
-px-3
-
-text-center
-
-border-r
-last:border-r-0
-
-border-gray-100
-"
+                        className="py-3 px-2 text-center border-r last:border-r-0 border-gray-100"
                       >
-                        <div className="text-[24px] mb-2">{i.icon}</div>
-
-                        <div
-                          className="
-text-[42px]
-font-black
-text-maroon
-leading-none
-"
-                        >
-                          <AnimatedCounter target={i.v} />
+                        <div className="mb-1 flex items-center justify-center h-5">
+                          <img src={i.icon} alt={i.t} className="w-5 h-5 object-contain" />
                         </div>
 
-                        <div
-                          className="
-text-[10px]
-uppercase
-tracking-[.18em]
-text-gray-400
-font-bold
-mt-2
-"
-                        >
+                        {/* Skeleton loader when data is 0 and jobs hasn't loaded */}
+                        <div className="h-8 flex items-center justify-center">
+                          {jobs.length === 0 && !jobs.length ? (
+                            <div className="bg-gray-200 rounded animate-pulse w-8 h-6" />
+                          ) : (
+                            <span className="text-[28px] font-black text-maroon leading-none tabular-nums">
+                              {i.v}
+                            </span>
+                          )}
+                        </div>
+
+                        <div className="text-[9px] uppercase tracking-[.18em] text-gray-400 font-bold mt-1">
                           {i.t}
                         </div>
                       </div>
@@ -1356,8 +1985,8 @@ mt-2
             ref={jobsRef}
             className="px-6 md:px-10 mt-6 pb-12 relative z-20"
           >
-            <div className="max-w-6xl mx-auto scroll-mt-28">
-              <div className="bg-white/90 rounded-[32px] shadow-[0_16px_50px_rgba(0,0,0,0.06)] p-3.5 flex flex-wrap lg:flex-nowrap items-center gap-3 border border-white">
+            <div className="max-w-7xl mx-auto scroll-mt-28">
+              <div className="bg-white/90 rounded-[32px] shadow-[0_16px_50px_rgba(0,0,0,0.06)] p-3.5 flex flex-col sm:flex-row flex-wrap lg:flex-nowrap items-start sm:items-center gap-3 border border-white w-full max-w-full overflow-hidden">
                 {[
                   {
                     label: 'Tipe Pekerjaan',
@@ -1385,8 +2014,8 @@ mt-2
                   },
                 ].map(({ label, options, value, onChange }, i) => (
                   <React.Fragment key={label}>
-                    <div className="flex-1 min-w-[140px] px-3 py-1.5">
-                      <p className="text-[10px] font-black text-gray-400 mb-1 px-4 uppercase tracking-widest">
+                    <div className="flex-1 min-w-0 sm:min-w-[120px] md:min-w-[140px] px-2 py-1.5 w-full sm:w-auto">
+                      <p className="text-[10px] font-black text-gray-400 mb-1 pl-2 sm:pl-4 uppercase tracking-widest whitespace-nowrap">
                         {label}
                       </p>
                       <DropdownFilter
@@ -1405,7 +2034,7 @@ mt-2
                 <div className="w-full mt-3 lg:mt-0 px-2 lg:min-w-[280px]">
                   <button
                     onClick={() => handleNavClick('jobs')}
-                    className="w-full bg-gradient-to-r from-[#6b1020] to-[#8b1a2e] text-white px-9 py-4 rounded-2xl font-black text-[13px] uppercase tracking-widest flex items-center justify-center gap-3 hover:shadow-[0_8px_25px_rgba(61,10,20,0.4)] hover:-translate-y-1 transition-all shadow-mdtext-white px-9 py-4 rounded-2xl font-black text-[13px] uppercase tracking-widest flex items-center justify-center gap-3 hover:shadow-[0_8px_25px_rgba(61,10,20,0.5)] hover:-translate-y-1 transition-all"
+                    className="w-full bg-gradient-to-r from-[#6b1020] to-[#8b1a2e] text-white px-9 py-4 rounded-2xl font-black text-[13px] uppercase tracking-widest flex items-center justify-center gap-3 hover:shadow-[0_8px_25px_rgba(61,10,20,0.4)] hover:-translate-y-1 transition-all shadow-md"
                   >
                     <svg
                       className="w-4 h-4"
@@ -1432,8 +2061,12 @@ mt-2
             <div className="max-w-7xl mx-auto">
               <div className="flex flex-col md:flex-row md:items-center justify-between mb-10 border-b border-gray-200/50 pb-6 gap-4">
                 <div className="flex items-center gap-5">
-                  <div className="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center text-2xl border border-gray-100">
-                    💼
+                  <div className="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center border border-gray-100">
+                    <img
+                      src="/images/lowongan terbaru.png"
+                      alt="Lowongan"
+                      className="w-8 h-8 object-contain"
+                    />
                   </div>
                   <div>
                     <h2 className="font-black text-gray-900 text-3xl drop-shadow-sm serif">
@@ -1461,17 +2094,24 @@ mt-2
                       Reset Filter ✕
                     </button>
                   )}
-                 <button
-  onClick={() => handleNavClick('jobs')}
-  className="text-sm font-black text-maroon border-2 border-maroon px-5 py-2.5 rounded-xl hover:bg-maroon hover:text-white transition-all"
->
-  Lihat Semua →
-</button>
+                  <button
+                    onClick={() => handleNavClick('jobs')}
+                    className="text-sm font-black text-maroon border-2 border-maroon px-5 py-2.5 rounded-xl hover:bg-maroon hover:text-white transition-all"
+                  >
+                    Lihat Semua →
+                  </button>
                 </div>
               </div>
 
-              {filteredJobs.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+              {/* Loading State - Show Skeleton Cards */}
+              {isLoading ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {[1, 2, 3, 4, 5, 6].map((i) => (
+                    <SkeletonCard key={i} />
+                  ))}
+                </div>
+              ) : filteredJobs.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                   {filteredJobs.map((job) => (
                     <JobCard
                       key={job.id}
@@ -1498,215 +2138,794 @@ mt-2
         </main>
       )}
 
-{/* ═══════════════════════════ JOBS PAGE ═══════════════════════════ */}
-{activeTab === 'jobs' && (
-  <main className="animate-fade-in flex-1">
-    <section className="px-6 md:px-10 pt-10 pb-6">
-      <div className="max-w-6xl mx-auto">
-        {/* Page Title */}
-        <div className="mb-8">
-          <span className="text-[10px] font-black uppercase tracking-[0.28em] text-maroon">
-            Direktori
-          </span>
-          <h2 className="text-4xl md:text-5xl font-black serif text-gray-900 mt-1 drop-shadow-sm">
-            Semua Lowongan
-          </h2>
-          <p className="text-gray-500 text-sm mt-2 font-medium">
-            Menampilkan {filteredJobs.length} lowongan yang sesuai dengan kriteria.
-          </p>
-        </div>
-
-        {/* Filter Bar dengan Search */}
-        <div className="bg-white rounded-[32px] shadow-[0_16px_50px_rgba(0,0,0,0.06)] p-3.5 flex flex-wrap lg:flex-nowrap items-center gap-3 border border-white mb-10 overflow-visible">
-          {[
-            {
-              label: 'Tipe Pekerjaan',
-              options: allTypes,
-              value: filterType,
-              onChange: setFilterType,
-            },
-            {
-              label: 'Kategori',
-              options: allCategories,
-              value: filterCategory[0] === 'Semua' ? 'Semua' : filterCategory[0],
-              onChange: (v) => setFilterCategory([v]),
-            },
-            {
-              label: 'Lokasi',
-              options: allLocations,
-              value: filterLocation[0] === 'Semua' ? 'Semua' : filterLocation[0],
-              onChange: (v) => setFilterLocation([v]),
-            },
-            {
-              label: 'Skill',
-              options: allSkills,
-              value: filterSkill[0] === 'Semua' ? 'Semua' : filterSkill[0],
-              onChange: (v) => setFilterSkill([v]),
-            },
-          ].map(({ label, options, value, onChange }, i) => (
-            <React.Fragment key={label}>
-              <div className="flex-1 min-w-[140px] px-3 py-1.5 whitespace-nowrap">
-                <p className="text-[10px] font-black text-gray-400 mb-1 px-4 uppercase tracking-[0.15em] whitespace-nowrap">
-  {label}
-</p>
-                <DropdownFilter
-                  label="Semua"
-                  options={options}
-                  selected={value}
-                  onSelect={onChange}
-                />
+      {/* ═══════════════════════════ JOBS PAGE ═══════════════════════════ */}
+      {activeTab === 'jobs' && (
+        <main className="animate-fade-in flex-1">
+          <section className="px-6 md:px-10 pt-10 pb-6">
+            <div className="max-w-6xl mx-auto">
+              {/* Page Title */}
+              <div className="mb-8">
+                <span className="text-[18px] font-black uppercase tracking-[0.28em] text-maroon">
+                  Direktori
+                </span>
+                <h2 className="text-4xl md:text-5xl font-black serif text-gray-900 mt-1 drop-shadow-sm">
+                  Semua Lowongan
+                </h2>
+                <p className="text-gray-500 text-sm mt-2 font-medium">
+                  Menampilkan {filteredJobs.length} lowongan yang sesuai dengan kriteria.
+                </p>
               </div>
-              {i < 3 && (
-                <div className="hidden lg:block w-px h-12 bg-gray-200 flex-shrink-0" />
-              )}
-            </React.Fragment>
-          ))}
 
-         {/* Tombol / Input Search */}
-          <div className="w-full mt-3 lg:mt-0 px-2">
-            {!searchOpen ? (
-              /* Tombol Cari — klik buka input */
-              <button
-                onClick={() => {
-                  setSearchOpen(true);
-                  setSearchInputVal(searchTerm);
-                }}
-                className="w-full bg-gradient-to-r from-[#6b1020] to-[#8b1a2e] text-white px-9 py-4 rounded-2xl font-black text-[13px] uppercase tracking-widest flex items-center justify-center gap-3 hover:shadow-[0_8px_25px_rgba(61,10,20,0.5)] hover:-translate-y-1 transition-all shadow-md"
-              >
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-                Cari Lowongan
-              </button>
-            ) : (
-              /* Input search muncul */
-              <form
-  className="flex items-center gap-2 w-full"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  setSearchTerm(searchInputVal);
-                  setSearchOpen(false);
-                }}
-              >
-                <div className="flex items-center gap-2 bg-gray-50 border-2 border-maroon rounded-2xl px-4 py-3 flex-1">
-                  <svg className="w-4 h-4 text-gray-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
-                  <input
-                    autoFocus
-                    type="text"
-                    placeholder="Cari posisi, perusahaan..."
-                    value={searchInputVal}
-                    onChange={(e) => {
-  setSearchInputVal(e.target.value);
-  setSearchTerm(e.target.value);
-}}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Escape') {
-                        setSearchOpen(false);
-                        setSearchInputVal(searchTerm);
-                      }
-                    }}
-                    className="flex-1 bg-transparent outline-none text-sm font-bold text-gray-800 placeholder-gray-400"
-                  />
-                  {searchInputVal && (
+              {/* Filter Bar dengan Search */}
+              <div className="bg-white rounded-[32px] shadow-[0_16px_50px_rgba(0,0,0,0.06)] p-3.5 flex flex-col sm:flex-row flex-wrap lg:flex-nowrap items-start sm:items-center gap-3 border border-white mb-10 overflow-hidden w-full max-w-full">
+                {[
+                  {
+                    label: 'Tipe Pekerjaan',
+                    options: allTypes,
+                    value: filterType,
+                    onChange: setFilterType,
+                  },
+                  {
+                    label: 'Kategori',
+                    options: allCategories,
+                    value: filterCategory[0] === 'Semua' ? 'Semua' : filterCategory[0],
+                    onChange: (v) => setFilterCategory([v]),
+                  },
+                  {
+                    label: 'Lokasi',
+                    options: allLocations,
+                    value: filterLocation[0] === 'Semua' ? 'Semua' : filterLocation[0],
+                    onChange: (v) => setFilterLocation([v]),
+                  },
+                  {
+                    label: 'Skill',
+                    options: allSkills,
+                    value: filterSkill[0] === 'Semua' ? 'Semua' : filterSkill[0],
+                    onChange: (v) => setFilterSkill([v]),
+                  },
+                ].map(({ label, options, value, onChange }, i) => (
+                  <React.Fragment key={label}>
+                    <div className="flex-1 min-w-0 sm:min-w-[120px] md:min-w-[140px] px-2 py-1.5 w-full sm:w-auto">
+                      <p className="text-[10px] font-black text-gray-400 mb-1 pl-2 sm:pl-4 uppercase tracking-widest whitespace-nowrap">
+                        {label}
+                      </p>
+                      <DropdownFilter
+                        label="Semua"
+                        options={options}
+                        selected={value}
+                        onSelect={onChange}
+                      />
+                    </div>
+                    {i < 3 && (
+                      <div className="hidden lg:block w-px h-12 bg-gray-200 flex-shrink-0" />
+                    )}
+                  </React.Fragment>
+                ))}
+
+                {/* Tombol / Input Search */}
+                <div className="w-full mt-3 lg:mt-0 px-2">
+                  {!searchOpen ? (
                     <button
-                      type="button"
-                      onClick={() => setSearchInputVal('')}
-                      className="text-gray-400 hover:text-gray-600 transition-colors text-xs font-black"
+                      onClick={() => {
+                        setSearchOpen(true);
+                        setSearchInputVal(searchTerm);
+                      }}
+                      className="w-full bg-gradient-to-r from-[#6b1020] to-[#8b1a2e] text-white px-9 py-4 rounded-2xl font-black text-[13px] uppercase tracking-widest flex items-center justify-center gap-3 hover:shadow-[0_8px_25px_rgba(61,10,20,0.5)] hover:-translate-y-1 transition-all shadow-md"
                     >
-                      ✕
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={3}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                        />
+                      </svg>
+                      Cari Lowongan
                     </button>
+                  ) : (
+                    <form
+                      className="flex items-center gap-2 w-full"
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        setSearchTerm(searchInputVal);
+                        setSearchOpen(false);
+                      }}
+                    >
+                      <div className="flex items-center gap-2 bg-gray-50 border-2 border-maroon rounded-2xl px-4 py-3 flex-1">
+                        <svg
+                          className="w-4 h-4 text-gray-400 flex-shrink-0"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={2.5}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                          />
+                        </svg>
+                        <input
+                          autoFocus
+                          type="text"
+                          placeholder="Cari posisi, perusahaan..."
+                          value={searchInputVal}
+                          onChange={(e) => {
+                            setSearchInputVal(e.target.value);
+                            setSearchTerm(e.target.value);
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Escape') {
+                              setSearchOpen(false);
+                              setSearchInputVal(searchTerm);
+                            }
+                          }}
+                          className="flex-1 bg-transparent outline-none text-sm font-bold text-gray-800 placeholder-gray-400"
+                        />
+                        {searchInputVal && (
+                          <button
+                            type="button"
+                            onClick={() => setSearchInputVal('')}
+                            className="text-gray-400 hover:text-gray-600 transition-colors text-xs font-black"
+                          >
+                            ✕
+                          </button>
+                        )}
+                      </div>
+                      <button
+                        type="submit"
+                        className="bg-gradient-to-r from-[#6b1020] to-[#8b1a2e] text-white px-6 py-3 rounded-2xl font-black text-[12px] uppercase tracking-widest hover:shadow-lg hover:-translate-y-0.5 transition-all shadow-md flex-shrink-0"
+                      >
+                        Cari
+                      </button>
+                    </form>
                   )}
                 </div>
-                <button
-                  type="submit"
-                  className="bg-gradient-to-r from-[#6b1020] to-[#8b1a2e] text-white px-6 py-3 rounded-2xl font-black text-[12px] uppercase tracking-widest hover:shadow-lg hover:-translate-y-0.5 transition-all shadow-md flex-shrink-0"
-                >
-                  Cari
-                </button>
-              </form>
-            )}
+              </div>
+
+              {/* Active filter info */}
+              {(searchTerm || hasActiveFilter) && (
+                <div className="flex items-center justify-between mb-6 bg-white/70 rounded-2xl px-5 py-3 border border-white shadow-sm backdrop-blur-md">
+                  <p className="text-sm text-gray-600 font-bold">
+                    {filteredJobs.length} hasil ditemukan
+                    {searchTerm && (
+                      <>
+                        {' '}
+                        untuk <span className="text-maroon font-black">"{searchTerm}"</span>
+                      </>
+                    )}
+                  </p>
+                  <button
+                    onClick={() => {
+                      setSearchTerm('');
+                      setSearchInputVal('');
+                      setFilterType('Semua');
+                      setFilterHours('Semua');
+                      setFilterCategory(['Semua']);
+                      setFilterLocation(['Semua']);
+                      setFilterSkill(['Semua']);
+                      setFilterPosition(['Semua']);
+                      setSearchOpen(false);
+                    }}
+                    className="text-[11px] font-black uppercase tracking-widest text-red-500 hover:text-white hover:bg-red-500 bg-red-50 px-4 py-2 rounded-xl transition-all"
+                  >
+                    Reset ✕
+                  </button>
+                </div>
+              )}
+
+              {/* Job Grid with Loading State */}
+              {isLoading ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {[1, 2, 3, 4, 5, 6].map((i) => (
+                    <SkeletonCard key={i} />
+                  ))}
+                </div>
+              ) : filteredJobs.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {filteredJobs.map((job) => (
+                    <JobCard
+                      key={job.id}
+                      job={job}
+                      savedJobs={savedJobs}
+                      onSave={toggleSave}
+                      onSelect={setSelectedJob}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-24 bg-white/60 rounded-[32px] border border-white shadow-inner backdrop-blur-md">
+                  <p className="text-7xl mb-6 drop-shadow-md">🔍</p>
+                  <p className="text-gray-800 text-xl font-black mb-2">
+                    Tidak ada lowongan yang ditemukan.
+                  </p>
+                  <p className="text-gray-500 text-sm font-medium mb-8">
+                    Coba ubah keyword atau filter untuk melihat hasil lain.
+                  </p>
+                  <button
+                    onClick={() => {
+                      setSearchTerm('');
+                      setSearchInputVal('');
+                      setFilterType('Semua');
+                      setFilterCategory(['Semua']);
+                      setFilterLocation(['Semua']);
+                      setFilterSkill(['Semua']);
+                      setSearchOpen(false);
+                    }}
+                    className="bg-gradient-to-r from-[#6b1020] to-[#8b1a2e] text-white px-8 py-4 text-xs font-black uppercase tracking-widest rounded-xl shadow-md hover:-translate-y-0.5 transition-all"
+                  >
+                    Reset Semua Filter
+                  </button>
+                </div>
+              )}
+            </div>
+          </section>
+        </main>
+      )}
+
+      {/* ═══════════════════════════ PROFILE ═══════════════════════════ */}
+      {activeTab === 'profile' && (
+        <div className="animate-fade-in px-4 py-6 sm:px-6 md:py-8 md:px-10 max-w-6xl mx-auto w-full max-w-full overflow-hidden">
+          {/* Header */}
+          <div className="mb-6 sm:mb-8 border-b border-gray-200/50 pb-4 sm:pb-6">
+            <span className="text-xs sm:text-sm md:text-[18px] font-black uppercase tracking-[0.2em] sm:tracking-[0.28em] text-maroon">
+              Akun Saya
+            </span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black serif text-gray-900 mt-1 leading-tight">
+              Profil Saya
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+            {/* ── KIRI ── */}
+            <div className="lg:col-span-2 flex flex-col gap-4 sm:gap-5">
+              {/* Hero Card - Mobile Optimized */}
+              <div className="relative bg-white rounded-2xl sm:rounded-[28px] overflow-hidden border border-gray-100 shadow-sm">
+                <div className="h-1 sm:h-[3px] bg-gradient-to-r from-[#6b1020] via-[#c99042] to-[#6b1020]" />
+                <div className="p-4 sm:p-6 md:p-8">
+                  {/* Mobile: Stack vertically, Desktop: horizontal */}
+                  <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6">
+                    {/* Avatar */}
+                    <label className="relative flex-shrink-0 cursor-pointer self-center sm:self-start">
+                      <div
+                        className="w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden border-4 border-white shadow-lg bg-gray-100 flex items-center justify-center"
+                        style={{
+                          boxShadow: '0 0 0 3px rgba(201,144,66,0.3), 0 8px 24px rgba(107,16,32,0.15)',
+                        }}
+                      >
+                        {profile.foto ? (
+                          <img src={profile.foto} alt="foto" className="w-full h-full object-cover" />
+                        ) : (
+                          <img
+                            src="/icon/icon-profile.png"
+                            alt="profile"
+                            className="w-10 h-10 sm:w-12 sm:h-12 object-contain"
+                          />
+                        )}
+                      </div>
+                      <div className="absolute bottom-0 right-0 w-6 h-6 sm:w-7 sm:h-7 bg-[#c99042] rounded-full border-2 border-white flex items-center justify-center shadow-md">
+                        <img
+                          src="/icon/icon-edit.png"
+                          alt="edit"
+                          className="w-2.5 h-2.5 sm:w-3 sm:h-3 object-contain"
+                        />
+                      </div>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={(e) => {
+                          const f = e.target.files[0];
+                          if (!f) return;
+                          const r = new FileReader();
+                          r.onload = (ev) => setProfile((p) => ({ ...p, foto: ev.target.result }));
+                          r.readAsDataURL(f);
+                        }}
+                      />
+                    </label>
+
+                    {/* Profile Info */}
+                    <div className="flex-1 w-full min-w-0 text-center sm:text-left">
+                      <h2 className="text-xl sm:text-2xl font-black text-gray-900 leading-tight break-words">
+                        {profile.name}
+                      </h2>
+                      <p className="text-gray-400 text-sm font-medium mt-1 break-words">
+                        {profile.universitas}
+                      </p>
+                      <p className="text-[#c99042] text-sm font-black break-words">{profile.jurusan}</p>
+
+                      {/* Status Badge - Mobile responsive */}
+                      <div className="flex flex-col sm:flex-row items-center sm:items-start gap-2 sm:gap-3 mt-3 sm:mt-4">
+                        <button
+                          onClick={() => setProfile((p) => ({ ...p, tersedia: !p.tersedia }))}
+                          className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-full text-[10px] sm:text-[11px] font-black uppercase tracking-wider transition-all border min-h-[36px] ${
+                            profile.tersedia
+                              ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                              : 'bg-gray-50 text-gray-500 border-gray-200'
+                          }`}
+                        >
+                          <span className={`w-2 h-2 rounded-full flex-shrink-0 ${profile.tersedia ? 'bg-emerald-500' : 'bg-gray-400'}`} />
+                          <span className="whitespace-nowrap">{profile.tersedia ? 'Siap Bekerja' : 'Tidak Tersedia'}</span>
+                        </button>
+
+                        <button
+                          onClick={() => {
+                            setEditSection('mainProfile');
+                            setEditTemp({
+                              name: profile.name,
+                              universitas: profile.universitas,
+                              jurusan: profile.jurusan,
+                              phone: profile.phone,
+                              linkedin: profile.linkedin,
+                              lokasi: profile.lokasi,
+                              tersedia: profile.tersedia,
+                            });
+                          }}
+                          className="flex items-center gap-1.5 px-3 sm:px-4 py-2 text-[10px] sm:text-[11px] font-black uppercase tracking-wider border border-[#c99042]/20 text-[#c99042] rounded-full hover:bg-[#c99042] hover:text-white transition-all min-h-[36px]"
+                        >
+                          <img src="/icon/icon-edit.png" alt="edit" className="w-2.5 h-2.5 sm:w-3 sm:h-3 object-contain" />
+                          Edit
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Edit Form */}
+                  {editSection === 'mainProfile' && (
+                    <div className="mt-4 sm:mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3 bg-gray-50 border border-gray-100 rounded-xl sm:rounded-2xl p-4 sm:p-5">
+                      {[
+                        ['name', 'Nama Lengkap'],
+                        ['universitas', 'Universitas'],
+                        ['jurusan', 'Jurusan'],
+                        ['phone', 'Nomor Telepon'],
+                        ['linkedin', 'LinkedIn'],
+                        ['lokasi', 'Lokasi'],
+                      ].map(([key, label]) => (
+                        <div key={key} className="col-span-1 sm:col-span-1">
+                          <label className="text-[9px] sm:text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1.5 sm:mb-2 block">
+                            {label}
+                          </label>
+                          <input
+                            value={editTemp[key] || ''}
+                            onChange={(e) => setEditTemp((prev) => ({ ...prev, [key]: e.target.value }))}
+                            className="w-full border border-gray-200 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2 sm:py-2.5 text-sm outline-none focus:border-[#6b1020] bg-white"
+                          />
+                        </div>
+                      ))}
+                      <div className="col-span-1 sm:col-span-2 flex flex-col sm:flex-row gap-2 mt-2">
+                        <button
+                          onClick={() => {
+                            setProfile((prev) => ({
+                              ...prev,
+                              name: editTemp.name || 'Pengguna SkillShift',
+                              universitas: editTemp.universitas || 'Belum diisi',
+                              jurusan: editTemp.jurusan || 'Belum diisi',
+                              phone: editTemp.phone || 'Belum diisi',
+                              linkedin: editTemp.linkedin || 'Belum diisi',
+                              lokasi: editTemp.lokasi || 'Belum diisi',
+                              tersedia: editTemp.tersedia,
+                            }));
+                            setEditTemp({});
+                            setEditSection(null);
+                          }}
+                          className="flex-1 bg-[#6b1020] text-white px-4 sm:px-5 py-2.5 sm:py-2.5 rounded-lg sm:rounded-xl text-xs font-black uppercase min-h-[44px]"
+                        >
+                          Simpan
+                        </button>
+                        <button
+                          onClick={() => { setEditTemp({}); setEditSection(null); }}
+                          className="flex-1 border border-gray-200 px-4 sm:px-5 py-2.5 sm:py-2.5 rounded-lg sm:rounded-xl text-xs font-black text-gray-500 uppercase min-h-[44px]"
+                        >
+                          Batal
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Section Card - Reusable Component */}
+              {[
+                {
+                  section: 'tentang',
+                  icon: '/icon/icon-description.png',
+                  iconAlt: 'description',
+                  title: 'Tentang Saya',
+                  value: profile.tentang,
+                  editTempKey: 'tentang',
+                  type: 'textarea',
+                  rows: 4,
+                },
+                {
+                  section: 'kontak',
+                  icon: '/icon/icon-informasi.png',
+                  iconAlt: 'informasi',
+                  title: 'Informasi Kontak',
+                  type: 'contact-grid',
+                  items: [
+                    ['email', 'Email', '/icon/icon-email.png', profile.email],
+                    ['phone', 'Telepon', '/icon/icon-kontak.png', profile.phone],
+                    ['linkedin', 'LinkedIn', '/icon/icon-link.png', profile.linkedin],
+                  ],
+                },
+                {
+                  section: 'tambahan',
+                  icon: '/icon/lainnya.png',
+                  iconAlt: 'informasi',
+                  title: 'Informasi Tambahan',
+                  type: 'info-list',
+                  items: [
+                    ['/icon/icon-stats-kota.png', 'Lokasi', profile.lokasi],
+                    ['/icon/icon-kalender.png', 'Tanggal Lahir', profile.tanggalLahir],
+                    ['/icon/icon-bahasa.png', 'Bahasa', profile.bahasa],
+                  ],
+                },
+              ].map(({ section, icon, iconAlt, title, type, value, editTempKey, rows, items }) => (
+                <div key={section} className="bg-white rounded-2xl sm:rounded-[28px] border border-gray-100 shadow-sm p-4 sm:p-5 md:p-6">
+                  <div className="flex items-center justify-between mb-3 sm:mb-4">
+                    <div className="flex items-center gap-2 sm:gap-3">
+                      <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-[#6b1020]/10 flex items-center justify-center">
+                        <img src={icon} alt={iconAlt} className="w-3.5 h-3.5 sm:w-4 sm:h-4 object-contain" />
+                      </div>
+                      <h3 className="font-black text-gray-900 text-sm sm:text-[15px]">{title}</h3>
+                    </div>
+                    <button
+                      onClick={() => {
+                        setEditSection(section);
+                        if (editTempKey) setEditTemp({ [editTempKey]: value });
+                        else if (type === 'contact-grid') {
+                          setEditTemp({
+                            email: profile.email,
+                            phone: profile.phone,
+                            linkedin: profile.linkedin,
+                          });
+                        } else if (type === 'info-list') {
+                          setEditTemp({
+                            lokasi: profile.lokasi,
+                            tanggalLahir: profile.tanggalLahir,
+                            bahasa: profile.bahasa,
+                          });
+                        }
+                      }}
+                      className="flex items-center gap-1.5 text-[10px] sm:text-[11px] font-black text-[#c99042] border border-[#c99042]/20 rounded-lg px-2 sm:px-3 py-1.5 hover:bg-[#c99042]/10 transition-all min-w-[44px] min-h-[36px] justify-center"
+                    >
+                      <img src="/icon/icon-edit.png" alt="edit" className="w-2.5 h-2.5 sm:w-3 sm:h-3 object-contain" />
+                      <span className="hidden sm:inline">Edit</span>
+                    </button>
+                  </div>
+
+                  {/* Edit Mode */}
+                  {editSection === section && (
+                    <div className="flex flex-col gap-3">
+                      {type === 'textarea' && (
+                        <textarea
+                          rows={rows}
+                          value={editTemp[editTempKey] || ''}
+                          onChange={(e) => setEditTemp((t) => ({ ...t, [editTempKey]: e.target.value }))}
+                          className="w-full border border-gray-200 rounded-xl p-3 text-sm font-medium text-gray-700 outline-none focus:border-[#6b1020] resize-none bg-gray-50"
+                        />
+                      )}
+                      {type === 'contact-grid' && items?.map(([k, l, ico]) => (
+                        <div key={k}>
+                          <label className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1 flex items-center gap-1.5">
+                            <img src={ico} alt={l} className="w-3 h-3 object-contain" />
+                            {l}
+                          </label>
+                          <input
+                            value={editTemp[k] || ''}
+                            onChange={(e) => setEditTemp((t) => ({ ...t, [k]: e.target.value }))}
+                            className="w-full border border-gray-200 rounded-xl px-3 sm:px-4 py-2 sm:py-2.5 text-sm font-medium outline-none focus:border-[#6b1020] bg-gray-50"
+                          />
+                        </div>
+                      ))}
+                      {type === 'info-list' && items?.map(([k, l, ico]) => (
+                        <div key={k}>
+                          <label className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1 flex items-center gap-1.5">
+                            <img src={ico} alt={l} className="w-3 h-3 object-contain" />
+                            {l}
+                          </label>
+                          <input
+                            value={editTemp[k] || ''}
+                            onChange={(e) => setEditTemp((t) => ({ ...t, [k]: e.target.value }))}
+                            className="w-full border border-gray-200 rounded-xl px-3 sm:px-4 py-2 sm:py-2.5 text-sm font-medium outline-none focus:border-[#6b1020] bg-gray-50"
+                          />
+                        </div>
+                      ))}
+                      <div className="flex gap-2 mt-1">
+                        <button
+                          onClick={() => {
+                            if (editTempKey) setProfile((p) => ({ ...p, [editTempKey]: editTemp[editTempKey] }));
+                            else setProfile((p) => ({ ...p, ...editTemp }));
+                            setEditSection(null);
+                          }}
+                          className="flex-1 bg-[#6b1020] text-white px-4 sm:px-5 py-2.5 rounded-xl text-xs font-black uppercase shadow-sm min-h-[44px]"
+                        >
+                          Simpan
+                        </button>
+                        <button
+                          onClick={() => setEditSection(null)}
+                          className="flex-1 border border-gray-200 px-4 sm:px-5 py-2.5 rounded-xl text-xs font-black uppercase text-gray-500 min-h-[44px]"
+                        >
+                          Batal
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* View Mode */}
+                  {editSection !== section && (
+                    <>
+                      {type === 'textarea' && (
+                        <p className="text-gray-500 text-sm leading-relaxed font-medium break-words">
+                          {value}
+                        </p>
+                      )}
+                      {type === 'contact-grid' && (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                          {items?.map(([_, label, ico, val]) => (
+                            <div key={label} className="bg-gray-50 rounded-xl sm:rounded-2xl p-3 sm:p-4 border border-gray-100">
+                              <p className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1.5 flex items-center gap-1.5">
+                                <img src={ico} alt={label} className="w-3 h-3 object-contain" />
+                                {label}
+                              </p>
+                              <p className="text-[12px] sm:text-[13px] font-bold text-gray-700 break-words truncate">{val || '-'}</p>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      {type === 'info-list' && (
+                        <div className="flex flex-col">
+                          {items?.map(([icon, label, val], idx, arr) => (
+                            <div key={label} className={`flex items-start gap-3 sm:gap-4 py-2.5 sm:py-3 ${idx < arr.length - 1 ? 'border-b border-gray-100' : ''}`}>
+                              <img src={icon} alt={label} className="w-4 h-4 sm:w-5 sm:h-5 object-contain flex-shrink-0 mt-0.5" />
+                              <span className="w-24 sm:w-32 text-[10px] sm:text-[11px] font-black uppercase tracking-wider text-gray-400 flex-shrink-0">
+                                {label}
+                              </span>
+                              <span className="text-[12px] sm:text-[13px] font-semibold text-gray-700 break-words">{val || '-'}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* ── KANAN ── */}
+            <div className="flex flex-col gap-4 sm:gap-5">
+              {/* Skills Card */}
+              <div className="bg-white rounded-2xl sm:rounded-[28px] border border-gray-100 shadow-sm p-4 sm:p-5 md:p-6">
+                <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-[#c99042]/15 flex items-center justify-center">
+                    <img src="/icon/icon-skills.png" alt="skills" className="w-3.5 h-3.5 sm:w-4 sm:h-4 object-contain" />
+                  </div>
+                  <h3 className="font-black text-gray-900 text-sm sm:text-[15px]">Keahlian</h3>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {profile.skills.map((s, i) => (
+                    <div key={i} className="group relative">
+                      <span className="bg-[#fdf8f0] border border-[#e8d5b0] text-[#7a5020] text-[10px] sm:text-[11px] font-black px-2.5 sm:px-3 py-1.5 rounded-xl block break-words">
+                        {s}
+                      </span>
+                      <button
+                        onClick={() => setProfile((p) => ({ ...p, skills: p.skills.filter((_, idx) => idx !== i) }))}
+                        className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-red-500 text-white rounded-full text-[9px] hidden group-hover:flex items-center justify-center"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  ))}
+                </div>
+                {editSection === 'skill' ? (
+                  <div className="mt-3 flex gap-2">
+                    <input
+                      autoFocus
+                      value={editTemp.skill || ''}
+                      onChange={(e) => setEditTemp((t) => ({ ...t, skill: e.target.value }))}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' && editTemp.skill) {
+                          setProfile((p) => ({ ...p, skills: [...p.skills, editTemp.skill] }));
+                          setEditTemp({});
+                          setEditSection(null);
+                        }
+                        if (e.key === 'Escape') setEditSection(null);
+                      }}
+                      placeholder="Ketik skill..."
+                      className="flex-1 border border-[#c99042] rounded-xl px-3 py-2 text-sm outline-none bg-gray-50 min-h-[44px]"
+                    />
+                    <button
+                      onClick={() => {
+                        if (editTemp.skill) {
+                          setProfile((p) => ({ ...p, skills: [...p.skills, editTemp.skill] }));
+                          setEditTemp({});
+                          setEditSection(null);
+                        }
+                      }}
+                      className="bg-[#6b1020] text-white px-4 py-2 rounded-xl text-xs font-black min-h-[44px]"
+                    >
+                      +
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => setEditSection('skill')}
+                    className="mt-3 w-full border border-dashed border-[#c99042]/50 text-[#c99042] text-[10px] sm:text-[11px] font-black py-2.5 sm:py-2 rounded-xl hover:bg-[#fdf8f0] transition-all uppercase tracking-wider min-h-[44px]"
+                  >
+                    + Tambah Skill
+                  </button>
+                )}
+              </div>
+
+              {/* Education Card */}
+              <div className="bg-white rounded-2xl sm:rounded-[28px] border border-gray-100 shadow-sm p-4 sm:p-5 md:p-6">
+                <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl bg-[#c99042]/15 flex items-center justify-center shadow-sm">
+                    <img src="/icon/pendidikan.png" alt="pendidikan" className="w-4 h-4 sm:w-5 sm:h-5 object-contain" />
+                  </div>
+                  <h3 className="font-black text-gray-900 text-sm sm:text-[15px]">Riwayat Pendidikan</h3>
+                </div>
+                <div className="flex flex-col gap-3">
+                  {profile.pendidikan.map((p, i) => (
+                    <div key={i} className="relative bg-gray-50 rounded-xl sm:rounded-2xl p-3 sm:p-4 pb-14 sm:pb-16 border border-gray-100 overflow-hidden">
+                      <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-[#6b1020] to-[#c99042] rounded-l-xl sm:rounded-l-2xl" />
+                      <div className="absolute bottom-3 sm:bottom-4 right-3 sm:right-4 flex gap-1.5 sm:gap-2">
+                        <button
+                          onClick={() => {
+                            setEditSection('pendidikan');
+                            setEditTemp({ index: i, institusi: p.institusi, jurusan: p.jurusan, tahun: p.tahun });
+                          }}
+                          className="text-[9px] sm:text-[10px] font-black text-[#c99042] bg-white border border-gray-200 px-2 py-1 rounded-lg hover:bg-[#c99042] hover:text-white transition-all min-h-[32px]"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => setProfile((prev) => ({ ...prev, pendidikan: prev.pendidikan.filter((_, idx) => idx !== i) }))}
+                          className="text-[9px] sm:text-[10px] font-black text-red-500 bg-white border border-red-100 px-2 py-1 rounded-lg hover:bg-red-500 hover:text-white transition-all min-h-[32px]"
+                        >
+                          Hapus
+                        </button>
+                      </div>
+                      <p className="font-black text-gray-900 text-[12px] sm:text-[13px] pl-3 break-words">{p.institusi}</p>
+                      <p className="text-gray-400 text-[11px] sm:text-[12px] font-medium mt-0.5 pl-3 break-words">{p.jurusan}</p>
+                      <p className="text-[#c99042] text-[10px] sm:text-[11px] font-black mt-0.5 pl-3">{p.tahun}</p>
+                    </div>
+                  ))}
+                </div>
+                {editSection === 'pendidikan' ? (
+                  <div className="mt-3 flex flex-col gap-2">
+                    {[['institusi', 'Nama Institusi'], ['jurusan', 'Jurusan'], ['tahun', 'Tahun']]?.map(([k, pl]) => (
+                      <input
+                        key={k}
+                        placeholder={pl}
+                        value={editTemp[k] || ''}
+                        onChange={(e) => setEditTemp((t) => ({ ...t, [k]: e.target.value }))}
+                        className="border border-gray-200 rounded-xl px-3 py-2 text-sm outline-none focus:border-[#6b1020] bg-gray-50"
+                      />
+                    ))}
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => {
+                          if (editTemp.institusi) {
+                            const dataPendidikan = { institusi: editTemp.institusi, jurusan: editTemp.jurusan || '', tahun: editTemp.tahun || '' };
+                            const pendidikanBaru = editTemp.index !== undefined
+                              ? profile.pendidikan.map((item, idx) => idx === editTemp.index ? dataPendidikan : item)
+                              : [...profile.pendidikan, dataPendidikan];
+                            setProfile((p) => ({ ...p, pendidikan: pendidikanBaru }));
+                            setEditTemp({});
+                            setEditSection(null);
+                          }
+                        }}
+                        className="flex-1 bg-[#6b1020] text-white px-4 py-2 rounded-xl text-xs font-black min-h-[44px]"
+                      >
+                        Simpan
+                      </button>
+                      <button
+                        onClick={() => setEditSection(null)}
+                        className="flex-1 border border-gray-200 px-4 py-2 rounded-xl text-xs font-black text-gray-500 min-h-[44px]"
+                      >
+                        Batal
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => setEditSection('pendidikan')}
+                    className="mt-3 w-full border border-dashed border-[#c99042]/50 text-[#c99042] text-[10px] sm:text-[11px] font-black py-2.5 sm:py-2 rounded-xl hover:bg-[#fdf8f0] transition-all uppercase tracking-wider min-h-[44px]"
+                  >
+                    + Tambah Pendidikan
+                  </button>
+                )}
+              </div>
+
+              {/* Experience Card */}
+              <div className="bg-white rounded-2xl sm:rounded-[28px] border border-gray-100 shadow-sm p-4 sm:p-5 md:p-6">
+                <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl bg-[#c99042]/15 flex items-center justify-center shadow-sm">
+                    <img src="/icon/icon-deskripsi.png" alt="pengalaman" className="w-4 h-4 sm:w-5 sm:h-5 object-contain" />
+                  </div>
+                  <h3 className="font-black text-gray-900 text-sm sm:text-[15px]">Pengalaman</h3>
+                </div>
+                <div className="flex flex-col gap-3">
+                  {profile.pengalaman.map((p, i) => (
+                    <div key={i} className="flex items-center gap-3 bg-[#fdf8f0] rounded-xl sm:rounded-2xl p-3 sm:p-4 border border-[#e8d5b0]/40">
+                      <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white border border-[#e8d5b0] flex items-center justify-center text-lg shadow-sm flex-shrink-0">
+                        {p.icon}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-black text-gray-900 text-[12px] sm:text-[13px] break-words">{p.posisi}</p>
+                        <p className="text-gray-500 text-[11px] sm:text-[12px] font-medium break-words">{p.tempat}</p>
+                        <p className="text-[#c99042] text-[10px] sm:text-[11px] font-black">{p.tahun}</p>
+                      </div>
+                      <button
+                        onClick={() => setProfile((p2) => ({ ...p2, pengalaman: p2.pengalaman.filter((_, idx) => idx !== i) }))}
+                        className="text-gray-300 hover:text-red-400 transition-colors text-sm flex-shrink-0 p-1"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  ))}
+                </div>
+                {editSection === 'pengalaman' ? (
+                  <div className="mt-3 flex flex-col gap-2">
+                    {[['posisi', 'Posisi/Jabatan'], ['tempat', 'Tempat'], ['tahun', 'Tahun']]?.map(([k, pl]) => (
+                      <input
+                        key={k}
+                        placeholder={pl}
+                        value={editTemp[k] || ''}
+                        onChange={(e) => setEditTemp((t) => ({ ...t, [k]: e.target.value }))}
+                        className="border border-gray-200 rounded-xl px-3 py-2 text-sm outline-none focus:border-[#6b1020] bg-gray-50"
+                      />
+                    ))}
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => {
+                          if (editTemp.posisi) {
+                            setProfile((p) => ({
+                              ...p,
+                              pengalaman: [...p.pengalaman, { posisi: editTemp.posisi, tempat: editTemp.tempat || '', tahun: editTemp.tahun || '', icon: '💼' }],
+                            }));
+                            setEditTemp({});
+                            setEditSection(null);
+                          }
+                        }}
+                        className="flex-1 bg-[#6b1020] text-white px-4 py-2 rounded-xl text-xs font-black min-h-[44px]"
+                      >
+                        Simpan
+                      </button>
+                      <button
+                        onClick={() => setEditSection(null)}
+                        className="flex-1 border border-gray-200 px-4 py-2 rounded-xl text-xs font-black text-gray-500 min-h-[44px]"
+                      >
+                        Batal
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => setEditSection('pengalaman')}
+                    className="mt-3 w-full border border-dashed border-[#c99042]/50 text-[#c99042] text-[10px] sm:text-[11px] font-black py-2.5 sm:py-2 rounded-xl hover:bg-[#fdf8f0] transition-all uppercase tracking-wider min-h-[44px]"
+                  >
+                    + Tambah Pengalaman
+                  </button>
+                )}
+              </div>
+            </div>
           </div>
         </div>
-
-        {/* Active filter info */}
-        {(searchTerm || hasActiveFilter) && (
-          <div className="flex items-center justify-between mb-6 bg-white/70 rounded-2xl px-5 py-3 border border-white shadow-sm backdrop-blur-md">
-            <p className="text-sm text-gray-600 font-bold">
-              {filteredJobs.length} hasil ditemukan
-              {searchTerm && (
-                <> untuk <span className="text-maroon font-black">"{searchTerm}"</span></>
-              )}
-            </p>
-            <button
-              onClick={() => {
-                setSearchTerm('');
-                setSearchInputVal('');
-                setFilterType('Semua');
-                setFilterHours('Semua');
-                setFilterCategory(['Semua']);
-                setFilterLocation(['Semua']);
-                setFilterSkill(['Semua']);
-                setFilterPosition(['Semua']);
-                setSearchOpen(false);
-              }}
-              className="text-[11px] font-black uppercase tracking-widest text-red-500 hover:text-white hover:bg-red-500 bg-red-50 px-4 py-2 rounded-xl transition-all"
-            >
-              Reset ✕
-            </button>
-          </div>
-        )}
-
-        {/* Job Grid */}
-        {filteredJobs.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {filteredJobs.map((job) => (
-              <JobCard
-                key={job.id}
-                job={job}
-                savedJobs={savedJobs}
-                onSave={toggleSave}
-                onSelect={setSelectedJob}
-              />
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-24 bg-white/60 rounded-[32px] border border-white shadow-inner backdrop-blur-md">
-            <p className="text-7xl mb-6 drop-shadow-md">🔍</p>
-            <p className="text-gray-800 text-xl font-black mb-2">
-              Tidak ada lowongan yang ditemukan.
-            </p>
-            <p className="text-gray-500 text-sm font-medium mb-8">
-              Coba ubah keyword atau filter untuk melihat hasil lain.
-            </p>
-            <button
-              onClick={() => {
-                setSearchTerm('');
-                setSearchInputVal('');
-                setFilterType('Semua');
-                setFilterCategory(['Semua']);
-                setFilterLocation(['Semua']);
-                setFilterSkill(['Semua']);
-                setSearchOpen(false);
-              }}
-              className="bg-gradient-to-r from-[#6b1020] to-[#8b1a2e] text-white px-8 py-4 text-xs font-black uppercase tracking-widest rounded-xl shadow-md hover:-translate-y-0.5 transition-all"
-            >
-              Reset Semua Filter
-            </button>
-          </div>
-        )}
-      </div>
-    </section>
-  </main>
-)}
+      )}
 
       {/* ═══════════════════════════ SAVED ═══════════════════════════ */}
-      {activeTab === 'saved' && (
+      {activeTab === 'saved' && !isAdminAuth && (
         <div className="animate-fade-in p-6 md:p-10 max-w-5xl mx-auto w-full">
           <div className="flex items-end justify-between mb-10 border-b border-gray-200/50 pb-6">
             <div>
-              <span className="text-[10px] font-black uppercase tracking-[0.28em] text-maroon">
+              <span className="text-[18px] font-black uppercase tracking-[0.28em] text-maroon">
                 Bookmark
               </span>
               <h2 className="text-4xl md:text-5xl font-black serif text-gray-900 mt-2 drop-shadow-sm">
@@ -1719,7 +2938,9 @@ mt-2
           </div>
           {savedJobs.length === 0 ? (
             <div className="text-center py-28 bg-white/60 rounded-[24px] border border-white shadow-[0_8px_30px_rgba(0,0,0,0.03)] backdrop-blur-sm">
-              <p className="text-7xl mb-6 drop-shadow-sm">🔖</p>
+              <p className="mb-6">
+                <img src="/images/icon-bookmark.png" alt="bookmark" className="w-20 h-20 mx-auto" />
+              </p>
               <p className="text-gray-800 text-xl font-black mb-2">
                 Belum ada loker yang disimpan.
               </p>
@@ -1753,19 +2974,26 @@ mt-2
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex flex-wrap gap-2 mb-2">
-                        <span className="text-[9px] font-black uppercase tracking-widest px-3 py-1 bg-gray-100 text-gray-600 rounded-md border border-gray-200">
+                        <span className="text-[9px] font-black uppercase tracking-widest px-3 py-1 h-8 flex items-center bg-gray-100 text-gray-600 rounded-md border border-gray-200">
                           {j.type}
                         </span>
-                        <span className="text-[9px] font-bold uppercase tracking-widest text-maroon bg-maroon/5 px-3 py-1 rounded-md border border-maroon/10">
-                          📍 {j.location}
+                        <span className="text-[9px] font-bold uppercase tracking-widest text-maroon bg-maroon/5 px-3 py-1 h-8 flex items-center rounded-md border border-maroon/10">
+                          {j.location}
                         </span>
                       </div>
-                      <h3 className="font-black text-xl truncate text-gray-900 leading-tight mb-1">
+                      <h3 className="font-black text-lg sm:text-xl truncate sm:block text-gray-900 leading-tight mb-1 break-words hyphens-auto">
                         {j.title}
                       </h3>
-                      <p className="text-sm text-gray-500 font-medium">
-                        {j.company} · <span className="text-gray-900 font-black">{j.salary}</span>
-                      </p>
+                      <div className="flex flex-col mt-1">
+                        <p className="text-sm text-gray-500 font-medium flex items-center gap-1.5">
+                          <img src="/images/icon-gedung.png" alt="gedung" className="w-4 h-4" />
+                          {j.company}
+                        </p>
+                        <p className="text-sm text-gray-900 font-black flex items-center gap-1 mt-0.5">
+                          <img src="/images/icon-gaji.png" alt="gaji" className="w-4 h-4" />
+                          {j.salary}
+                        </p>
+                      </div>
                     </div>
                   </div>
                   <div className="flex gap-3 flex-shrink-0">
@@ -1793,7 +3021,7 @@ mt-2
       {activeTab === 'history' && (
         <div className="animate-fade-in p-6 md:p-10 max-w-5xl mx-auto w-full">
           <div className="border-b border-gray-200/50 pb-6 mb-10">
-            <span className="text-[10px] font-black uppercase tracking-[0.28em] text-[#c99042]">
+            <span className="text-[18px] font-black uppercase tracking-[0.28em] text-[#c99042]">
               Riwayat Karir
             </span>
             <h2 className="text-4xl md:text-5xl font-black serif text-gray-900 mt-2 drop-shadow-sm">
@@ -1805,52 +3033,81 @@ mt-2
           </div>
           {acceptedJobs.length === 0 ? (
             <div className="relative overflow-hidden rounded-[32px] border border-[#e8d5b0]/40 bg-white py-20 px-10 text-center shadow-sm">
-  {/* Gold top line */}
-  <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#c99042] to-transparent" />
-  {/* Subtle background ornament */}
-  <div className="absolute -top-10 -right-10 w-48 h-48 rounded-full bg-[#c99042]/5" />
-  <div className="absolute -bottom-10 -left-10 w-48 h-48 rounded-full bg-[#6b1020]/5" />
+              {/* Gold top line */}
+              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#c99042] to-transparent" />
+              {/* Subtle background ornament */}
+              <div className="absolute -top-10 -right-10 w-48 h-48 rounded-full bg-[#c99042]/5" />
+              <div className="absolute -bottom-10 -left-10 w-48 h-48 rounded-full bg-[#6b1020]/5" />
 
-  {/* Icon */}
-  <div className="relative z-10 mx-auto mb-8 w-20 h-20">
-    <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-      <defs>
-        <linearGradient id="trophyGold" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#f5e0a0"/>
-          <stop offset="100%" stopColor="#c99042"/>
-        </linearGradient>
-      </defs>
-      <circle cx="40" cy="40" r="38" stroke="url(#trophyGold)" strokeWidth="0.8" strokeOpacity="0.4"/>
-      <circle cx="40" cy="40" r="32" fill="#fdf8f0"/>
-      <path d="M28 24h24v16c0 8.8-5.4 13-12 13s-12-4.2-12-13V24z" stroke="#c99042" strokeWidth="1.8" strokeLinejoin="round"/>
-      <path d="M28 30c-4 0-6 2-6 6s2 6 6 6M52 30c4 0 6 2 6 6s-2 6-6 6" stroke="#c99042" strokeWidth="1.8" strokeLinecap="round"/>
-      <path d="M34 53h12M40 53v6" stroke="#c99042" strokeWidth="1.8" strokeLinecap="round"/>
-      <path d="M32 59h16" stroke="#c99042" strokeWidth="1.8" strokeLinecap="round"/>
-    </svg>
-  </div>
+              {/* Icon */}
+              <div className="relative z-10 mx-auto mb-8 w-20 h-20">
+                <svg
+                  viewBox="0 0 80 80"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-full h-full"
+                >
+                  <defs>
+                    <linearGradient id="trophyGold" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#f5e0a0" />
+                      <stop offset="100%" stopColor="#c99042" />
+                    </linearGradient>
+                  </defs>
+                  <circle
+                    cx="40"
+                    cy="40"
+                    r="38"
+                    stroke="url(#trophyGold)"
+                    strokeWidth="0.8"
+                    strokeOpacity="0.4"
+                  />
+                  <circle cx="40" cy="40" r="32" fill="#fdf8f0" />
+                  <path
+                    d="M28 24h24v16c0 8.8-5.4 13-12 13s-12-4.2-12-13V24z"
+                    stroke="#c99042"
+                    strokeWidth="1.8"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M28 30c-4 0-6 2-6 6s2 6 6 6M52 30c4 0 6 2 6 6s-2 6-6 6"
+                    stroke="#c99042"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                  />
+                  <path
+                    d="M34 53h12M40 53v6"
+                    stroke="#c99042"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                  />
+                  <path d="M32 59h16" stroke="#c99042" strokeWidth="1.8" strokeLinecap="round" />
+                </svg>
+              </div>
 
-  {/* Text */}
-  <div className="relative z-10">
-    <p className="text-[10px] font-black uppercase tracking-[0.35em] text-[#c99042] mb-3">
-      Riwayat Karir
-    </p>
-    <h3 className="font-black text-gray-900 text-2xl serif mb-3">
-      Belum Ada Pencapaian
-    </h3>
-    <div className="w-12 h-[1px] bg-gradient-to-r from-transparent via-[#c99042] to-transparent mx-auto mb-4"/>
-    <p className="text-gray-500 text-sm max-w-sm mx-auto leading-relaxed font-medium mb-8">
-      Lamar lowongan impianmu, lalu tandai sebagai <span className="text-[#7a5c2e] font-black">Diterima</span> untuk mencatat perjalanan karirmu di sini.
-    </p>
-    <button
-      onClick={() => handleNavClick('jobs')}
-      className="bg-gradient-to-r from-[#6b1020] to-[#8b1a2e] text-white px-8 py-3 text-[11px] font-black uppercase tracking-widest rounded-xl shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all"
-    >
-      Jelajahi Lowongan →
-    </button>
-  </div>
-</div>
+              {/* Text */}
+              <div className="relative z-10">
+                <p className="text-[18px] font-black uppercase tracking-[0.35em] text-[#c99042] mb-3">
+                  Riwayat Karir
+                </p>
+                <h3 className="font-black text-gray-900 text-2xl serif mb-3">
+                  Belum Ada Pencapaian
+                </h3>
+                <div className="w-12 h-[1px] bg-gradient-to-r from-transparent via-[#c99042] to-transparent mx-auto mb-4" />
+                <p className="text-gray-500 text-sm max-w-sm mx-auto leading-relaxed font-medium mb-8">
+                  Lamar lowongan impianmu, lalu tandai sebagai{' '}
+                  <span className="text-[#7a5c2e] font-black">Diterima</span> untuk mencatat
+                  perjalanan karirmu di sini.
+                </p>
+                <button
+                  onClick={() => handleNavClick('jobs')}
+                  className="bg-gradient-to-r from-[#6b1020] to-[#8b1a2e] text-white px-8 py-3 text-[11px] font-black uppercase tracking-widest rounded-xl shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all"
+                >
+                  Jelajahi Lowongan →
+                </button>
+              </div>
+            </div>
           ) : (
-            <div className="flex flex-col gap-5">
+            <div className="grid grid-cols-2 gap-4">
               {acceptedJobs.map((j) => (
                 <AcceptedCard
                   key={j.id}
@@ -1868,8 +3125,9 @@ mt-2
         <div className="animate-fade-in p-6 md:p-10 max-w-6xl mx-auto w-full">
           <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-gray-200/60 pb-6 mb-10 gap-4">
             <div>
-              <span className="text-[10px] font-black uppercase tracking-[0.28em] text-maroon">
-                🔐 Mode Administrator
+              <span className="text-[18px] font-black uppercase tracking-[0.28em] text-maroon flex items-center gap-2">
+                <img src="/images/gembok.png" alt="admin" className="w-5 h-5 align-middle -mt-0.5" />
+                Mode Administrator
               </span>
               <h2 className="text-4xl md:text-5xl font-black serif text-gray-900 mt-2 drop-shadow-sm">
                 Dashboard
@@ -1882,117 +3140,500 @@ mt-2
               >
                 + Tambah Lowongan
               </button>
-              <button
-                onClick={() => {
-                  setIsAdminAuth(false);
-                  setActiveTab('home');
-                }}
-                className="border-2 border-gray-200 bg-white px-8 py-4 text-xs font-bold uppercase hover:bg-gray-50 transition-all text-gray-600 rounded-xl shadow-sm"
-              >
-                Logout
-              </button>
             </div>
           </div>
           {/* Admin Stats with Shadows */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
             {[
-              { label: 'Total Lowongan', value: jobs.length, accent: '#8b182a', icon: '📋' },
-              { label: 'Disimpan User', value: savedJobs.length, accent: '#1e293b', icon: '🔖' },
+              {
+                label: 'Total Lowongan',
+                value: jobs.length,
+                accent: '#8b182a',
+                iconImg: '/images/icon-deskripsi.png',
+                iconAlt: 'description',
+              },
+              {
+                label: 'Disimpan User',
+                value: savedJobs.length,
+                accent: '#1e293b',
+                iconImg: '/images/icon-save.png',
+                iconAlt: 'save',
+              },
               {
                 label: 'Kota Jangkauan',
                 value: allLocations.length - 1,
                 accent: '#c99042',
-                icon: '📍',
+                iconImg: '/images/icon-stats-kota.png',
+                iconAlt: 'kota',
               },
               {
                 label: 'Kategori Aktif',
                 value: allCategories.length - 1,
                 accent: '#059669',
-                icon: '🏷️',
+                iconImg: '/images/icon-user-admin.png',
+                iconAlt: 'kategori',
               },
-            ].map(({ label, value, accent, icon }, idx) => (
+            ].map(({ label, value, accent, iconImg, iconAlt, iconEmoji }) => (
               <div
                 key={label}
-                className="bg-white/90 backdrop-blur-md border border-white p-3 relative overflow-hidden hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] transition-all rounded-[32px] shadow-lg hover:-translate-y-1"
+                className="bg-white/70 backdrop-blur-sm border border-gray-200/50 p-2 relative overflow-hidden hover:bg-white/80 hover:shadow-[0_4px_20px_rgba(0,0,0,0.04)] transition-all rounded-2xl shadow-sm hover:scale-[1.02]"
               >
-                <div
-                  className="absolute top-0 left-0 right-0 h-2 rounded-t-[32px] opacity-80"
-                  style={{ backgroundColor: accent, boxShadow: `0 2px 10px ${accent}60` }}
-                />
-                <div className="flex flex-col items-center justify-center text-center gap-1">
-  <p className="text-2xl drop-shadow-sm">{icon}</p>
-  <p
-    className="text-2xl font-black serif tabular-nums text-transparent bg-clip-text"
-    style={{
-      backgroundImage: `linear-gradient(to bottom right, ${accent}, ${accent}90)`,
-    }}
-  >
-    {value}
-  </p>
- <p className="text-[9px] font-black uppercase tracking-widest text-gray-500 mt-1">
-    {label}
-  </p>
-</div>
+                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gray-300/40 to-transparent" />
+                <div className="flex flex-col items-center justify-center text-center gap-0.5 py-2">
+                  <div className="text-xl drop-shadow-sm">
+                    {iconImg ? (
+                      <img
+                        src={iconImg}
+                        alt={iconAlt}
+                        className="w-5 h-5 object-contain opacity-80"
+                      />
+                    ) : (
+                      iconEmoji
+                    )}
+                  </div>
+                  <p
+                    className="text-xl font-bold text-gray-800 tabular-nums"
+                    style={{
+                      color: accent,
+                    }}
+                  >
+                    {value}
+                  </p>
+                  <p className="text-[8px] font-semibold uppercase tracking-wider text-gray-400">
+                    {label}
+                  </p>
+                </div>
               </div>
             ))}
           </div>
           <h3 className="text-2xl font-black serif mb-6 text-gray-900 flex items-center gap-3 drop-shadow-sm">
             <span className="w-10 h-10 bg-white shadow-sm flex items-center justify-center rounded-xl text-lg">
-              📋
+              <img src="/images/icon-deskripsi.png" alt="description" className="w-4 h-4" />
             </span>{' '}
             Manajemen Lowongan
           </h3>
-          <div className="flex flex-col gap-5">
-            {jobs.map((job) => (
-              <div
-                key={job.id}
-                className="bg-white/80 backdrop-blur-md p-6 md:p-8 border border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-6 hover:shadow-[0_12px_30px_rgba(139,24,42,0.06)] hover:border-maroon/20 transition-all rounded-[24px] shadow-sm group"
-              >
-                <div className="flex items-center gap-6 flex-1 min-w-0">
-                  {job.image && (
-                    <img
-                      src={job.image}
-                      alt={job.title}
-                      className="w-20 h-20 object-cover flex-shrink-0 rounded-2xl shadow-inner hidden sm:block group-hover:scale-105 transition-transform"
-                    />
-                  )}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex flex-wrap gap-2 mb-2">
-                      <span
-                        className={`text-[9px] font-black uppercase tracking-widest px-3 py-1 border rounded-md shadow-sm ${typeColor[job.type] || 'bg-gray-100 text-gray-600 border-gray-200'}`}
-                      >
-                        {job.type}
-                      </span>
-                      <span className="text-[9px] font-bold uppercase tracking-widest text-gray-500 bg-white border border-gray-100 px-3 py-1 rounded-md">
-                        {job.category}
-                      </span>
+          <div className="flex flex-col gap-4">
+            {jobs.map((job) => {
+              const jobAcceptedBy = allAcceptedJobs.filter((a) => a.jobId === job.id);
+              return (
+                <div key={job.id} className="w-full">
+                  <div className="bg-white/80 backdrop-blur-md p-4 md:p-6 border border-gray-100 flex flex-col gap-4 hover:shadow-[0_12px_30px_rgba(139,24,42,0.06)] hover:border-maroon/20 transition-all rounded-2xl shadow-sm group w-full overflow-hidden">
+                    <div className="flex items-start gap-4 w-full">
+                      {job.image && (
+                        <img
+                          src={job.image}
+                          alt={job.title}
+                          className="w-16 h-16 md:w-20 md:h-20 object-cover flex-shrink-0 rounded-xl shadow-inner group-hover:scale-105 transition-transform"
+                        />
+                      )}
+                      <div className="flex-1 min-w-0 w-full">
+                        <div className="flex flex-wrap gap-2 mb-2">
+                          <span
+                            className={`text-[8px] md:text-[9px] font-black uppercase tracking-widest px-2 md:px-3 py-1 border rounded-md shadow-sm ${typeColor[job.type] || 'bg-gray-100 text-gray-600 border-gray-200'}`}
+                          >
+                            {job.type}
+                          </span>
+                          <span className="text-[8px] md:text-[9px] font-bold uppercase tracking-widest text-gray-500 bg-white border border-gray-100 px-2 md:px-3 py-1 rounded-md">
+                            {job.category}
+                          </span>
+                        </div>
+                        <h4 className="font-black text-base md:text-xl text-gray-900 leading-tight mb-1 truncate w-full">
+                          {job.title}
+                        </h4>
+                        <div className="flex flex-col gap-1 text-xs md:text-sm font-medium">
+                          <span className="flex items-center gap-2 text-gray-600">
+                            <img
+                              src="/images/icon-gedung.png"
+                              alt="perusahaan"
+                              className="w-3 h-3 md:w-4 md:h-4"
+                            />
+                            <span className="truncate">{job.company}</span>
+                          </span>
+
+                          <span className="flex items-center gap-2 text-gray-800 font-bold">
+                            <img src="/images/icon-location.png" alt="lokasi" className="w-3 h-3 md:w-4 md:h-4" />
+                            <span className="truncate">{job.location}</span>
+                          </span>
+
+                          <span className="flex items-center gap-2 text-maroon font-black">
+                            <img src="/images/icon-gaji.png" alt="gaji" className="w-3 h-3 md:w-4 md:h-4" />
+                            {job.salary}
+                          </span>
+                        </div>
+                      </div>
                     </div>
-                    <h4 className="font-black text-xl text-gray-900 truncate leading-tight mb-1">
-                      {job.title}
-                    </h4>
-                    <p className="text-sm text-gray-500 font-medium">
-                      {job.company} ·{' '}
-                      <span className="font-bold text-gray-800">📍 {job.location}</span> ·{' '}
-                      <span className="text-maroon font-black">{job.salary}</span>
+                    <div className="flex flex-wrap gap-2 w-full">
+                      <button
+                        onClick={() => setSelectedJob(job)}
+                        className="text-[10px] md:text-xs font-semibold uppercase tracking-wider px-3 md:px-4 py-2 bg-white border border-[#D1D5DB] text-[#4B5563] hover:bg-[#F9FAFB] transition-all duration-300 rounded-lg shadow-sm flex-1 md:flex-none"
+                      >
+                        Preview
+                      </button>
+                      <button
+                        onClick={() => handleEditJob(job)}
+                        className="text-[10px] md:text-xs font-semibold uppercase tracking-wider px-3 md:px-4 py-2 bg-white border border-[#C8A2A2] text-[#8B4A4A] hover:bg-[#FDF2F2] transition-all duration-300 rounded-lg shadow-sm flex-1 md:flex-none"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDeleteJob(job.id)}
+                        className="text-[10px] md:text-xs font-semibold uppercase tracking-wider px-3 md:px-4 py-2 bg-white border border-[#D8B4B4] text-[#A44A4A] hover:bg-[#FEF2F2] transition-all duration-300 rounded-lg shadow-sm flex-1 md:flex-none"
+                      >
+                        Hapus
+                      </button>
+                    </div>
+                  </div>
+                  {jobAcceptedBy.length > 0 && (
+                    <div className="bg-emerald-50/50 border border-emerald-100 rounded-[16px] p-4 ml-0 md:ml-6 mt-3">
+                      <p className="text-[12px] font-black uppercase tracking-widest text-emerald-700 mb-3">
+                        Diterima oleh ({jobAcceptedBy.length})
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {jobAcceptedBy.map((accepted) => (
+                          <div
+                            key={accepted.id}
+                            className="bg-white border border-emerald-200 rounded-lg px-3 py-2 flex items-center gap-2"
+                          >
+                            <div className="w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center flex-shrink-0">
+                              <svg
+                                className="w-3 h-3 text-white"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                              >
+                                <path
+                                  fillRule="evenodd"
+                                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                  clipRule="evenodd"
+                                />
+                              </svg>
+                            </div>
+                            <div>
+                              <p className="text-[11px] font-black text-gray-800">
+                                {accepted.userName}
+                              </p>
+                              <p className="text-[10px] text-gray-500">{accepted.userEmail}</p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* ═══════════════════════════ ADMIN DITERIMA ═══════════════════════════ */}
+      {activeTab === 'admin-diterima' && isAdminAuth && (
+        <div className="animate-fade-in p-6 md:p-10 max-w-6xl mx-auto w-full">
+          <div className="mb-10 border-b border-gray-200/60 pb-6">
+            <span className="text-[18px] font-black uppercase tracking-[0.28em] text-maroon flex items-center gap-2">
+              <img src="/images/gembok.png" alt="admin" className="w-5 h-5 align-middle -mt-0.5" />
+              Administrator
+            </span>
+            <h2 className="text-4xl md:text-5xl font-black serif text-gray-900 mt-2 drop-shadow-sm">
+              Pengguna yang Diterima
+            </h2>
+            <p className="text-gray-500 font-medium mt-2">
+              List semua mahasiswa yang sudah menandai diterima untuk lowongan
+            </p>
+          </div>
+
+          {allAcceptedJobs.length > 0 ? (
+            <div className="flex flex-col gap-4">
+              {allAcceptedJobs.map((accepted) => (
+                <div
+                  key={accepted.id}
+                  className="bg-white/80 backdrop-blur-md p-6 border border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-6 hover:shadow-[0_12px_30px_rgba(139,24,42,0.06)] hover:border-maroon/20 transition-all rounded-[24px] shadow-sm group"
+                >
+                  <div className="flex items-start gap-6 flex-1">
+                    <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">
+                      <img
+                        src="/icon/icon-accepted.png"
+                        alt="accepted"
+                        className="w-12 h-12 object-contain"
+                      />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="mb-2">
+                        <span className="text-[18px] font-black text-gray-800">
+                          {new Date(accepted.acceptedDate).toLocaleDateString('id-ID')}
+                        </span>
+                      </div>
+                      <h4 className="font-black text-lg text-gray-900 mb-1">{accepted.jobTitle}</h4>
+                      <div className="flex items-center gap-2 text-sm text-gray-600 font-medium mb-3">
+                        <img src="/images/icon-gedung.png" alt="company" className="w-4 h-4" />
+                        <span>{accepted.company}</span>
+
+                        <span className="mx-1">·</span>
+
+                        <img src="/images/icon-location.png" alt="location" className="w-4 h-4" />
+                        <span className="font-bold">{accepted.location}</span>
+                      </div>
+                      <div className="flex flex-wrap items-center gap-3 mt-3">
+                        <span className="text-sm font-bold text-gray-800 flex items-center gap-1.5">
+                          <img
+                            src="/icon/icon-profile.png"
+                            alt="user"
+                            className="w-4 h-4 object-contain"
+                          />
+                          {accepted.userName}
+                        </span>
+
+                        <span className="text-sm text-gray-500">{accepted.userEmail}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-[11px] font-black uppercase tracking-widest text-gray-400 mb-2">
+                      Gaji
                     </p>
+
+                    <div className="flex items-center justify-end gap-2">
+                      <img
+                        src="/images/icon-gaji.png"
+                        alt="salary"
+                        className="w-5 h-5 object-contain"
+                      />
+
+                      <p className="text-[18px] font-black text-maroon">{accepted.salary}</p>
+                    </div>
                   </div>
                 </div>
-                <div className="flex gap-3 flex-shrink-0">
-                  <button
-                    onClick={() => setSelectedJob(job)}
-                    className="flex-1 md:flex-none text-xs font-black uppercase tracking-widest px-6 py-4 border-2 border-gray-200 text-gray-600 hover:border-maroon hover:text-maroon transition-all rounded-xl bg-white shadow-sm"
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-16">
+              <div className="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-4">
+                <svg
+                  className="w-10 h-10 text-gray-400"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              </div>
+              <p className="text-gray-500 font-bold text-lg">
+                Belum ada mahasiswa yang menandai diterima
+              </p>
+              <p className="text-gray-400 text-sm mt-1">
+                Data akan muncul ketika ada mahasiswa yang menandai lowongan
+              </p>
+            </div>
+          )}
+        </div>
+      )}
+      {/* ═══════════════════════════ ADMIN AKUN ═══════════════════════════ */}
+      {activeTab === 'admin-akun' && isAdminAuth && (
+        <div className="animate-fade-in p-6 md:p-10 max-w-6xl mx-auto w-full">
+          <div className="mb-8 border-b border-gray-200/50 pb-6">
+            <span className="text-[18px] font-black uppercase tracking-[0.28em] text-maroon flex items-center gap-2">
+              <img src="/icon/gembok.png" alt="admin" className="w-5 h-5" />
+              Administrator
+            </span>
+            <h2 className="text-4xl font-black serif text-gray-900 mt-1">Akun Admin</h2>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+            {/* ── KIRI (col-span-2) ── */}
+            <div className="lg:col-span-2 flex flex-col gap-5">
+              {/* Hero Card */}
+              <div className="relative bg-white rounded-[28px] overflow-hidden border border-gray-100 shadow-sm">
+                <div className="h-[3px] bg-gradient-to-r from-[#6b1020] via-[#c99042] to-[#6b1020]" />
+                <div className="p-8 flex items-center gap-6">
+                  <div
+                    className="w-24 h-24 rounded-full bg-gray-100 border-4 border-white flex items-center justify-center flex-shrink-0 shadow-lg overflow-hidden"
+                    style={{
+                      boxShadow: '0 0 0 3px rgba(201,144,66,0.3), 0 8px 24px rgba(107,16,32,0.15)',
+                    }}
                   >
-                    Preview
-                  </button>
-                  <button
-                    onClick={() => handleDeleteJob(job.id)}
-                    className="flex-1 md:flex-none text-xs font-black uppercase tracking-widest px-6 py-4 bg-red-50 text-red-500 border border-red-100 hover:bg-red-500 hover:text-white transition-all rounded-xl shadow-sm"
-                  >
-                    Hapus
-                  </button>
+                    <img
+                      src="/icon/icon-profile.png"
+                      alt="profile"
+                      className="w-12 h-12 object-contain"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <div>
+                      <h2 className="text-2xl font-black text-gray-900 leading-tight">
+                        {currentUser?.nama || 'Administrator'}
+                      </h2>
+                      <p className="text-gray-400 text-sm font-medium mt-0.5">
+                        {currentUser?.email || 'admin@skillshift.com'}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
-            ))}
+
+              {/* Informasi Akun */}
+              <div className="bg-white rounded-[28px] border border-gray-100 shadow-sm p-6">
+                <div className="flex items-center gap-3 mb-5">
+                  <div className="w-10 h-10 rounded-xl bg-[#6b1020]/10 flex items-center justify-center">
+                    <img src="/icon/icon-informasi.png" alt="info" className="w-6 h-6" />
+                  </div>
+                  <h3 className="font-black text-gray-900 text-[15px]">Informasi Akun</h3>
+                </div>
+                <div className="flex flex-col divide-y divide-gray-100">
+                  {[
+                    [
+                      'Administrator',
+                      currentUser?.nama || 'Admin SkillShift',
+                      '/icon/icon-profile.png',
+                    ],
+                    [
+                      'Email Admin',
+                      currentUser?.email || 'admin@skillshift.com',
+                      '/icon/icon-email.png',
+                    ],
+                    ['Peran', 'Administrator', '/icon/gembok.png'],
+                    ['Status Akun', 'Aktif & Terverifikasi', '/icon/icon-status.png'],
+                    ['Sistem Dikembangkan Sejak', '21 Mei 2026', '/icon/concept.png'],
+                  ].map(([label, val, icon]) => (
+                    <div key={label} className="flex items-center gap-4 py-4">
+                      <div className="w-8 h-8 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center flex-shrink-0">
+                        <img src={icon} alt={label} className="w-4 h-4" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-0.5">
+                          {label}
+                        </p>
+                        <p className="text-[14px] font-bold text-gray-800">{val}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              </div>
+
+            {/* ── KANAN ── */}
+            <div className="flex flex-col gap-5">
+              {/* Statistik Pengelolaan */}
+              <div className="bg-white rounded-[28px] border border-gray-100 shadow-sm p-6">
+                <div className="flex items-center gap-3 mb-5">
+                  <div className="w-8 h-8 rounded-xl bg-[#c99042]/15 flex items-center justify-center">
+                    <img src="/icon/icon-pengelola.png" alt="stats" className="w-4 h-4" />
+                  </div>
+                  <h3 className="font-black text-gray-900 text-[15px]">Statistik Pengelolaan</h3>
+                </div>
+                <div className="flex flex-col gap-3">
+                  {[
+                    {
+                      label: 'Total Lowongan',
+                      value: jobs.length,
+                      color: '#6b1020',
+                      icon: '/icon/icon-deskripsi.png',
+                    },
+                    {
+                      label: 'Kota Dijangkau',
+                      value: allLocations.length - 1,
+                      color: '#c99042',
+                      icon: '/icon/icon-stats-kota.png',
+                    },
+                    {
+                      label: 'Kategori Aktif',
+                      value: allCategories.length - 1,
+                      color: '#059669',
+                      icon: '/icon/icon-user-admin.png',
+                    },
+                    {
+                      label: 'Loker Disimpan',
+                      value: savedJobs.length,
+                      color: '#6366f1',
+                      icon: '/icon/icon-save.png',
+                    },
+                  ].map(({ label, value, color, icon }) => (
+                    <div
+                      key={label}
+                      className="flex items-center justify-between bg-gray-50 rounded-2xl p-4 border border-gray-100"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-xl bg-white border border-gray-200 flex items-center justify-center shadow-sm">
+                          <img src={icon} alt={label} className="w-4 h-4" />
+                        </div>
+                        <span className="text-[12px] font-bold text-gray-600">{label}</span>
+                      </div>
+                      <span className="text-[20px] font-black" style={{ color }}>
+                        {value}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Hak Akses */}
+              <div className="bg-white rounded-[28px] border border-gray-100 shadow-sm p-6">
+                <div className="flex items-center gap-3 mb-5">
+                  <div className="w-8 h-8 rounded-xl bg-[#6b1020]/10 flex items-center justify-center">
+                    <img src="/icon/icon-akses.png" alt="akses" className="w-4 h-4" />
+                  </div>
+                  <h3 className="font-black text-gray-900 text-[15px]">Hak Akses</h3>
+                </div>
+                <div className="flex flex-col gap-2">
+                  {[
+                    'Tambah Lowongan',
+                    'Hapus Lowongan',
+                    'Kelola Dashboard',
+                    'Lihat Semua Data',
+                  ].map((akses) => (
+                    <div
+                      key={akses}
+                      className="flex items-center gap-3 py-2 border-b border-gray-50 last:border-0"
+                    >
+                      <img
+                        src="/icon/security.png"
+                        alt="akses"
+                        className="w-5 h-5 object-contain flex-shrink-0"
+                      />
+                      <span className="text-[12px] font-bold text-gray-700">{akses}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Tim Pengembang - Full Width */}
+            <div className="col-span-1 lg:col-span-3">
+              <div className="bg-white rounded-[28px] border border-gray-100 shadow-sm p-6 w-full">
+                <div className="flex items-center gap-3 mb-5">
+                  <div className="w-10 h-10 rounded-xl bg-[#6b1020]/10 flex items-center justify-center">
+                    <img src="/icon/icon-team.png" alt="team" className="w-5 h-5" />
+                  </div>
+                  <h3 className="font-black text-gray-900 text-[15px]">Tim Pengembang</h3>
+                </div>
+                <div className="grid grid-cols-2 pb-3 border-b border-gray-200">
+                  <div className="text-[11px] font-black uppercase tracking-wider text-gray-400">
+                    Nama
+                  </div>
+                  <div className="text-[11px] font-black uppercase tracking-wider text-gray-400 text-right">
+                    Email / Username
+                  </div>
+                </div>
+                {[
+                  ['Khaisya Rizky Amanda', 'khaisyarizkyamanda14@gmail.com'],
+                  ['Wahda Alya Sadira Siregar', 'wahdasiregar10@gmail.com'],
+                  ['Hafis Safrizal', 'hafissafrizal34@gmail.com'],
+                  ['Putri Kalerin Harahap', 'putrikalerinharahap11@gmail.com'],
+                ].map(([nama, user]) => (
+                  <div
+                    key={nama}
+                    className="grid grid-cols-2 py-4 border-b border-gray-100 last:border-0"
+                  >
+                    <div className="font-black text-gray-900 text-[13px]">{nama}</div>
+                    <div className="text-right text-gray-500 text-[13px]">{user}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       )}
