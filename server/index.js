@@ -4,6 +4,7 @@ import Database from 'better-sqlite3';
 import cors from 'cors';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import { mkdirSync, existsSync } from 'node:fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -16,8 +17,16 @@ app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
-// Database setup
-const db = new Database(join(__dirname, '..', 'data', 'skillshift.db'));
+// Database setup - Create data directory if not exists
+const dataDir = join(__dirname, '..', 'data');
+if (!existsSync(dataDir)) {
+  mkdirSync(dataDir, { recursive: true });
+  console.log('Created data directory:', dataDir);
+}
+
+const dbPath = join(dataDir, 'skillshift.db');
+const db = new Database(dbPath);
+console.log('Database path:', dbPath);
 db.pragma('foreign_keys = OFF');
 
 // Create tables dengan schema baru
