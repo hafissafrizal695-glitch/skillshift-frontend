@@ -3217,8 +3217,9 @@ export default function App() {
               const jobAcceptedBy = allAcceptedJobs.filter((a) => a.jobId === job.id);
               return (
                 <div key={job.id} className="w-full">
-                  <div className="bg-white/80 backdrop-blur-md p-4 md:p-6 border border-gray-100 flex flex-col gap-4 hover:shadow-[0_12px_30px_rgba(139,24,42,0.06)] hover:border-maroon/20 transition-all rounded-2xl shadow-sm group w-full overflow-hidden">
-                    <div className="flex items-start gap-4 w-full">
+                  <div className="bg-white/80 backdrop-blur-md p-4 md:p-6 border border-gray-100 flex flex-col sm:flex-row justify-between items-start gap-4 hover:shadow-[0_12px_30px_rgba(139,24,42,0.06)] hover:border-maroon/20 transition-all rounded-2xl shadow-sm group w-full overflow-hidden">
+                    {/* Left: Job Details */}
+                    <div className="flex items-start gap-4 flex-1 min-w-0 w-full">
                       {job.image && (
                         <img
                           src={job.image}
@@ -3262,22 +3263,23 @@ export default function App() {
                         </div>
                       </div>
                     </div>
-                    <div className="flex flex-wrap gap-2 w-full">
+                    {/* Right: Action Buttons */}
+                    <div className="flex gap-2 items-center flex-shrink-0">
                       <button
                         onClick={() => setSelectedJob(job)}
-                        className="text-[10px] md:text-xs font-semibold uppercase tracking-wider px-3 md:px-4 py-2 bg-white border border-[#D1D5DB] text-[#4B5563] hover:bg-[#F9FAFB] transition-all duration-300 rounded-lg shadow-sm flex-1 md:flex-none"
+                        className="text-[10px] md:text-xs font-semibold uppercase tracking-wider px-3 md:px-4 py-2 bg-white border border-[#D1D5DB] text-[#4B5563] hover:bg-[#F9FAFB] transition-all duration-300 rounded-lg shadow-sm"
                       >
                         Preview
                       </button>
                       <button
                         onClick={() => handleEditJob(job)}
-                        className="text-[10px] md:text-xs font-semibold uppercase tracking-wider px-3 md:px-4 py-2 bg-white border border-[#C8A2A2] text-[#8B4A4A] hover:bg-[#FDF2F2] transition-all duration-300 rounded-lg shadow-sm flex-1 md:flex-none"
+                        className="text-[10px] md:text-xs font-semibold uppercase tracking-wider px-3 md:px-4 py-2 bg-white border border-[#C8A2A2] text-[#8B4A4A] hover:bg-[#FDF2F2] transition-all duration-300 rounded-lg shadow-sm"
                       >
                         Edit
                       </button>
                       <button
                         onClick={() => handleDeleteJob(job.id)}
-                        className="text-[10px] md:text-xs font-semibold uppercase tracking-wider px-3 md:px-4 py-2 bg-white border border-[#D8B4B4] text-[#A44A4A] hover:bg-[#FEF2F2] transition-all duration-300 rounded-lg shadow-sm flex-1 md:flex-none"
+                        className="text-[10px] md:text-xs font-semibold uppercase tracking-wider px-3 md:px-4 py-2 bg-white border border-[#D8B4B4] text-[#A44A4A] hover:bg-[#FEF2F2] transition-all duration-300 rounded-lg shadow-sm"
                       >
                         Hapus
                       </button>
