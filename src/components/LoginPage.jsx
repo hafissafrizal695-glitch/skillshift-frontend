@@ -375,7 +375,7 @@ export default function LoginPage({ onLoginSuccess }) {
             <button
               type="submit"
               disabled={adminLoading}
-              className="w-full py-3.5 bg-[#4c0519] hover:bg-[#901d31] disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-bold rounded-xl text-sm shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 active:scale-[0.98] flex items-center justify-center gap-2"
+              className="w-full py-3.5 bg-[#901d31] hover:bg-[#b0273f] disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-bold rounded-xl text-sm shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 active:scale-[0.98] flex items-center justify-center gap-2"
             >
               {adminLoading ? (
                 <>
