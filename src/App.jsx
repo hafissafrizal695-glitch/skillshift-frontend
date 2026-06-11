@@ -1908,8 +1908,7 @@ export default function App() {
                     Kerja yang <em className="hero-italic text-maroon drop-shadow-md">Tepat</em>
                   </h1>
                   <p className="text-gray-600 text-[16px] leading-relaxed max-w-lg mb-10 font-medium drop-shadow-sm">
-                    Platform terpercaya untuk mahasiswa menemukan peluang kerja, magang, dan
-                    part-time terbaik guna membangun karir cemerlang.
+                    Platform terpercaya untuk mahasiswa menemukan peluang kerja dan part-time terbaik guna membangun karir cemerlang.
                   </p>
                   <button
                     onClick={() => handleNavClick('jobs')}
@@ -2210,7 +2209,7 @@ export default function App() {
                         setSearchOpen(true);
                         setSearchInputVal(searchTerm);
                       }}
-                      className="w-full bg-gradient-to-r from-[#6b1020] to-[#8b1a2e] text-white px-9 py-4 rounded-2xl font-black text-[13px] uppercase tracking-widest flex items-center justify-center gap-3 hover:shadow-[0_8px_25px_rgba(61,10,20,0.5)] hover:-translate-y-1 transition-all shadow-md"
+                      className="w-full sm:w-auto bg-gradient-to-r from-[#6b1020] to-[#8b1a2e] text-white px-6 lg:px-9 py-4 rounded-2xl font-black text-[13px] uppercase tracking-widest flex items-center justify-center gap-3 hover:shadow-[0_8px_25px_rgba(61,10,20,0.5)] hover:-translate-y-1 transition-all shadow-md"
                     >
                       <svg
                         className="w-4 h-4"
@@ -2229,14 +2228,14 @@ export default function App() {
                     </button>
                   ) : (
                     <form
-                      className="flex items-center gap-2 w-full"
+                      className="flex flex-col sm:flex-row gap-2 w-full"
                       onSubmit={(e) => {
                         e.preventDefault();
                         setSearchTerm(searchInputVal);
                         setSearchOpen(false);
                       }}
                     >
-                      <div className="flex items-center gap-2 bg-gray-50 border-2 border-maroon rounded-2xl px-4 py-3 flex-1">
+                      <div className="flex items-center gap-2 bg-gray-50 border-2 border-maroon rounded-2xl px-4 py-3 flex-1 w-full">
                         <svg
                           className="w-4 h-4 text-gray-400 flex-shrink-0"
                           fill="none"
@@ -2279,7 +2278,7 @@ export default function App() {
                       </div>
                       <button
                         type="submit"
-                        className="bg-gradient-to-r from-[#6b1020] to-[#8b1a2e] text-white px-6 py-3 rounded-2xl font-black text-[12px] uppercase tracking-widest hover:shadow-lg hover:-translate-y-0.5 transition-all shadow-md flex-shrink-0"
+                        className="bg-gradient-to-r from-[#6b1020] to-[#8b1a2e] text-white px-6 py-3 rounded-2xl font-black text-[12px] uppercase tracking-widest hover:shadow-lg hover:-translate-y-0.5 transition-all shadow-md flex-shrink-0 w-full sm:w-auto"
                       >
                         Cari
                       </button>
