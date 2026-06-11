@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import './LoginPage.css';
 
-const API_URL = import.meta.env.VITE_API_URL || 'https://skillshift-backend-production.up.railway.app/api';
+const API_URL = (import.meta.env.VITE_API_URL || 'https://skillshift-backend-production.up.railway.app') + '/api';
 
 // ─── TOAST NOTIFICATION ───────────────────────────────────────────────────────
 function Toast({ message, type, onClose }) {
