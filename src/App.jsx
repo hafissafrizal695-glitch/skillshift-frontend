@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect, useRef, useCallback } from 'react'
 import './App.css';
 import LoginPage from './components/LoginPage';
 
-const API_URL = 'https://skillshift-backend-production.up.railway.app/api';
+const API_URL = import.meta.env.VITE_API_URL || 'https://skillshift-backend-production.up.railway.app/api';
 
 // ─── DATA (dihapus, sekarang dari database) ────────────────────────────────
 // Data diambil dari server SQLite
