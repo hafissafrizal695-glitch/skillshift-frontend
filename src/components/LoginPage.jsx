@@ -255,11 +255,70 @@ export default function LoginPage({ onLoginSuccess }) {
           <form onSubmit={handleAdminLogin}>
             {/* Logo */}
             <div className="flex items-center gap-2 mb-6">
-              <div className="w-9 h-9 rounded-lg bg-[#901d31] flex items-center justify-center text-white font-bold text-lg shadow-sm">
-                S
+              {/* Official SkillShift Logo - Same as navbar */}
+              <div className="w-9 h-9 flex-shrink-0">
+                <svg
+                  viewBox="0 0 48 48"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-full h-full"
+                >
+                  <defs>
+                    <linearGradient id="loginBgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#4a0a15" />
+                      <stop offset="100%" stopColor="#6b1020" />
+                    </linearGradient>
+                    <linearGradient id="loginGoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#e8c97a" />
+                      <stop offset="100%" stopColor="#c99042" />
+                    </linearGradient>
+                  </defs>
+                  {/* Base */}
+                  <rect width="48" height="48" rx="13" fill="url(#loginBgGrad)" />
+                  {/* Gold border */}
+                  <rect
+                    x="1.5"
+                    y="1.5"
+                    width="45"
+                    height="45"
+                    rx="12"
+                    stroke="url(#loginGoldGrad)"
+                    strokeWidth="0.8"
+                    strokeOpacity="0.5"
+                  />
+                  {/* Diagonal accent line */}
+                  <line
+                    x1="8"
+                    y1="40"
+                    x2="20"
+                    y2="8"
+                    stroke="#c99042"
+                    strokeWidth="0.6"
+                    strokeOpacity="0.25"
+                  />
+                  {/* Elegant S letter */}
+                  <path
+                    d="M15.5 18.5C15.5 15.5 17.8 13.5 21 13.5H27.5C30.2 13.5 32.5 15.5 32.5 18C32.5 20.8 30.2 22.5 27 22.5H21C17.8 22.5 15.5 24.8 15.5 27.5C15.5 30.5 17.8 32.5 21 32.5H28C30.8 32.5 33 30.5 33 27.5"
+                    stroke="white"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                  />
+                  {/* Gold dot accent */}
+                  <circle cx="37" cy="11" r="2.5" fill="url(#loginGoldGrad)" />
+                  {/* Gold line bottom */}
+                  <line
+                    x1="16"
+                    y1="38"
+                    x2="32"
+                    y2="38"
+                    stroke="url(#loginGoldGrad)"
+                    strokeWidth="0.8"
+                    strokeOpacity="0.4"
+                  />
+                </svg>
               </div>
               <span className="font-extrabold text-[#901d31] tracking-wide text-lg">
-                Skill<span className="text-[#f5a623]">Shift</span>
+                Skill<span className="text-[#c99042]">Shift</span>
               </span>
               <span className="text-[10px] bg-red-100 text-[#901d31] px-2 py-0.5 rounded font-bold uppercase tracking-wider">
                 Admin
@@ -350,11 +409,70 @@ export default function LoginPage({ onLoginSuccess }) {
           <form onSubmit={isRegisterMode ? handleUserRegister : handleUserLogin}>
             {/* Logo */}
             <div className="flex items-center gap-2 mb-6">
-              <div className="w-9 h-9 rounded-lg bg-[#901d31] flex items-center justify-center text-white font-bold text-lg shadow-sm">
-                S
+              {/* Official SkillShift Logo - Same as navbar */}
+              <div className="w-9 h-9 flex-shrink-0">
+                <svg
+                  viewBox="0 0 48 48"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-full h-full"
+                >
+                  <defs>
+                    <linearGradient id="loginBgGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#4a0a15" />
+                      <stop offset="100%" stopColor="#6b1020" />
+                    </linearGradient>
+                    <linearGradient id="loginGoldGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#e8c97a" />
+                      <stop offset="100%" stopColor="#c99042" />
+                    </linearGradient>
+                  </defs>
+                  {/* Base */}
+                  <rect width="48" height="48" rx="13" fill="url(#loginBgGrad2)" />
+                  {/* Gold border */}
+                  <rect
+                    x="1.5"
+                    y="1.5"
+                    width="45"
+                    height="45"
+                    rx="12"
+                    stroke="url(#loginGoldGrad2)"
+                    strokeWidth="0.8"
+                    strokeOpacity="0.5"
+                  />
+                  {/* Diagonal accent line */}
+                  <line
+                    x1="8"
+                    y1="40"
+                    x2="20"
+                    y2="8"
+                    stroke="#c99042"
+                    strokeWidth="0.6"
+                    strokeOpacity="0.25"
+                  />
+                  {/* Elegant S letter */}
+                  <path
+                    d="M15.5 18.5C15.5 15.5 17.8 13.5 21 13.5H27.5C30.2 13.5 32.5 15.5 32.5 18C32.5 20.8 30.2 22.5 27 22.5H21C17.8 22.5 15.5 24.8 15.5 27.5C15.5 30.5 17.8 32.5 21 32.5H28C30.8 32.5 33 30.5 33 27.5"
+                    stroke="white"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                  />
+                  {/* Gold dot accent */}
+                  <circle cx="37" cy="11" r="2.5" fill="url(#loginGoldGrad2)" />
+                  {/* Gold line bottom */}
+                  <line
+                    x1="16"
+                    y1="38"
+                    x2="32"
+                    y2="38"
+                    stroke="url(#loginGoldGrad2)"
+                    strokeWidth="0.8"
+                    strokeOpacity="0.4"
+                  />
+                </svg>
               </div>
               <span className="font-extrabold text-[#901d31] tracking-wide text-lg">
-                Skill<span className="text-[#f5a623]">Shift</span>
+                Skill<span className="text-[#c99042]">Shift</span>
               </span>
               <span className="text-[10px] bg-amber-50 text-amber-700 px-2 py-0.5 rounded font-bold uppercase tracking-wider">
                 Talent
