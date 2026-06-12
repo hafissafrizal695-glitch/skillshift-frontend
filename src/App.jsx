@@ -170,13 +170,14 @@ function DropdownFilter({ label, options, selected, onSelect, multi = false }) {
     }
   };
 
-  const displayLabel = multi
-    ? selected[0] === 'Semua' || selected.length === 0
-      ? label
-      : selected.join(', ')
-    : selected === 'Semua'
-      ? label
-      : selected;
+  const getDisplayLabel = () => {
+    if (multi) {
+      if (selected[0] === 'Semua' || selected.length === 0) return label;
+      return selected.join(', ');
+    }
+    return selected === 'Semua' ? label : selected;
+  };
+  const displayLabel = getDisplayLabel();
 
   return (
     <div className="relative flex-shrink-0" ref={ref} style={{ position: 'relative', zIndex: open ? 99999 : 50 }}>
