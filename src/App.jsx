@@ -136,10 +136,11 @@ function SkillShiftLogo({ onClick, small }) {
   );
 }
 
-// ─── DROPDOWN FILTER ─────────────────────────────────────────────────────────
+// ─── DROPDOWN FILTER (FIXED NESTING) ─────────────────────────────────────────
 function DropdownFilter({ label, options, selected, onSelect, multi = false }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
+
   useEffect(() => {
     const handler = (e) => {
       if (ref.current && !ref.current.contains(e.target)) setOpen(false);
@@ -183,7 +184,6 @@ function DropdownFilter({ label, options, selected, onSelect, multi = false }) {
         onClick={(e) => {
           e.stopPropagation();
           setOpen((o) => !o);
-          console.log('Dropdown clicked! open:', !open, '| options length:', options?.length, '| options:', options);
         }}
         className={`flex items-center gap-2 px-4 py-2.5 text-[12px] font-bold text-gray-800 transition-all whitespace-nowrap min-w-[100px] sm:min-w-[130px] justify-between hover:text-maroon rounded-xl hover:bg-maroon/5 ${isActive ? 'text-maroon bg-maroon/5' : ''}`}
       >
@@ -198,20 +198,8 @@ function DropdownFilter({ label, options, selected, onSelect, multi = false }) {
           <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
         </svg>
       </button>
-      {/* DEBUG VISIBLE INDICATOR - shows dropdown state */}
-      {open && (
-        <div
-          className="absolute top-full left-0 mt-3 bg-red-500 text-white p-4 rounded-xl shadow-lg min-w-[200px] z-[999999]"
-          style={{ position: 'absolute', top: '100%', left: 0, marginTop: '8px' }}
-        >
-          <p className="font-bold text-sm">DEBUG: Dropdown Open!</p>
-          <p className="text-xs">Options: {options?.length || 0}</p>
-          <p className="text-xs mt-1">Options list:</p>
-          {options?.map((opt, idx) => (
-            <p key={idx} className="text-xs bg-red-600 px-2 py-1 rounded mt-1">{opt}</p>
-          ))}
-        </div>
-      )}
+
+      {/* Menu Opsi Utama (Sudah dikeluarkan dari elemen debug) */}
       <div
         className={`dropdown-options absolute top-full left-0 mt-3 bg-white border border-gray-100 shadow-[0_12px_40px_rgba(0,0,0,0.15)] rounded-2xl py-3 px-2 min-w-[220px] ${open ? 'block' : 'hidden'}`}
         style={{
@@ -224,40 +212,136 @@ function DropdownFilter({ label, options, selected, onSelect, multi = false }) {
         }}
         onClick={(e) => e.stopPropagation()}
       >
-          {options.map((opt) => {
-            const isSel = multi ? selected.includes(opt) : selected === opt;
-            return (
-              <button
-                key={opt}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleSelect(opt);
-                }}
-                className={`w-full text-left px-5 py-2.5 text-[12px] font-bold transition-all flex items-center gap-3 ${isSel ? 'text-maroon bg-maroon/5' : 'text-gray-600 hover:bg-gray-50 hover:text-maroon'}`}
-              >
-                {multi && (
-                  <span
-                    className={`w-4 h-4 border rounded-md flex-shrink-0 flex items-center justify-center transition-all ${isSel ? 'bg-maroon border-maroon' : 'border-gray-300'}`}
-                  >
-                    {isSel && (
-                      <svg
-                        className="w-3 h-3 text-white"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={4}
-                      >
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                      </svg>
-                    )}
-                  </span>
-                )}
-                {opt}
-              </button>
-            );
-          })}
+        {options?.map((opt) => {
+          const isSel = multi ? selected.includes(opt) : selected === opt;
+          return (
+            <button
+              key={opt}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleSelect(opt);
+              }}
+              className={`w-full text-left px-5 py-2.5 text-[12px] font-bold transition-all flex items-center gap-3 ${isSel ? 'text-maroon bg-maroon/5' : 'text-gray-600 hover:bg-gray-50 hover:text-maroon'}`}
+            >
+              {multi && (
+                <span
+                  className={`w-4 h-4 border rounded-md flex-shrink-0 flex items-center justify-center transition-all ${isSel ? 'bg-maroon border-maroon' : 'border-gray-300'}`}
+                >
+                  {isSel && (
+                    <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                  )}
+                </span>
+              )}
+              {opt}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// ─── JOB CARD (UTUH & LENGKAP) ──────────────────────────────────────────────
+function JobCard({ job, savedJobs, onSave, onSelect }) {
+  const isSaved = savedJobs.some((s) => s.id === job.id);
+
+  const catIcon = {
+    Kreatif: '/images/kreatif.png',
+    IT: '/images/it.png',
+    'F&B': '/images/fnb.png',
+    Pendidikan: '/images/pendidikan.png',
+    Logistik: '/images/logistik.png',
+    Kesehatan: '/images/kesehatan.png',
+    Lainnya: '/images/lainnya.png',
+  };
+
+  return (
+    <div
+      onClick={() => onSelect(job)}
+      className="bg-white/90 backdrop-blur-md rounded-[32px] overflow-hidden border border-white shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_20px_50px_rgba(0,0,0,0.1)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col pb-4 relative min-h-[460px] cursor-pointer group"
+    >
+      <div className="relative h-[200px] overflow-hidden p-2 flex-shrink-0">
+        {job.image ? (
+          <img
+            src={job.image}
+            alt={job.title}
+            className="w-full h-full object-cover rounded-[24px] group-hover:scale-105 transition-transform duration-500"
+          />
+        ) : (
+          <div className="w-full h-full bg-gradient-to-br from-maroon/20 to-maroon/5 rounded-[24px] flex items-center justify-center">
+            <img
+              src={catIcon[job.category] || '/images/lainnya.png'}
+              alt={job.category}
+              className="w-12 h-12 opacity-40 object-contain"
+            />
+          </div>
+        )}
+
+        <span className="absolute top-5 left-5 text-[9px] font-black uppercase tracking-widest bg-white/90 text-maroon backdrop-blur-md px-3 py-1.5 rounded-full shadow-sm">
+          {job.category}
+        </span>
+      </div>
+
+      <div className="px-5 pt-2 pb-1 flex flex-col flex-1">
+        <p className="text-gray-400 text-[11px] font-bold uppercase tracking-wider mb-1 flex items-center gap-1.5">
+          <img src="/images/icon-gedung.png" alt="building" className="w-3.5 h-3.5 object-contain" />
+          {job.company}
+        </p>
+
+        <h3 className="font-black text-gray-900 text-lg leading-tight group-hover:text-maroon transition-colors line-clamp-2 mb-2">
+          {job.title}
+        </h3>
+
+        <div className="flex flex-wrap gap-1.5 mb-3">
+          <span className="text-[10px] font-extrabold px-2.5 py-1 bg-gray-50 text-gray-600 border border-gray-100 rounded-lg">
+            {job.type}
+          </span>
+          <span className="text-[10px] font-extrabold px-2.5 py-1 bg-gray-50 text-gray-600 border border-gray-100 rounded-lg">
+            {job.hours}
+          </span>
+          <span className="text-[10px] font-extrabold px-2.5 py-1 bg-gray-50 text-gray-600 border border-gray-100 rounded-lg">
+            {job.location}
+          </span>
         </div>
-      )}
+
+        <p className="text-gray-500 text-xs font-medium line-clamp-2 mb-4">
+          {job.description}
+        </p>
+
+        <div className="flex items-end justify-between mt-auto pt-3 border-t border-gray-50">
+          <div>
+            <p className="text-[9px] font-black uppercase tracking-widest text-gray-400 mb-0.5">Est. Gaji</p>
+            <p className="font-black text-maroon text-[15px] flex items-center gap-1">
+              <img src="/images/icon-gaji.png" alt="gaji" className="w-4 h-4 object-contain" />
+              {job.salary}
+            </p>
+          </div>
+
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onSave(job);
+            }}
+            className={`w-10 h-10 rounded-xl flex items-center justify-center border transition-all duration-200 ${
+              isSaved
+                ? 'bg-maroon border-maroon text-white shadow-md shadow-maroon/20'
+                : 'bg-white border-gray-200 text-gray-400 hover:border-maroon hover:text-maroon'
+            }`}
+          >
+            <svg
+              className="w-4 h-4"
+              fill={isSaved ? "currentColor" : "none"}
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2.5}
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+            </svg>
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
@@ -719,118 +803,6 @@ function SkeletonCard() {
             <div className="h-5 w-28 bg-gray-200 rounded skeleton" />
           </div>
           <div className="h-10 w-10 bg-gray-200 rounded-2xl skeleton" />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ─── JOB CARD ──────────────────────────────────────────────────────────────
-function JobCard({ job, savedJobs, onSave, onSelect }) {
-  const isSaved = savedJobs.some((s) => s.id === job.id);
-  const catIcon = {
-    Kreatif: '/images/kreatif.png',
-    IT: '/images/it.png',
-    'F&B': '/images/fnb.png',
-    Pendidikan: '/images/pendidikan.png',
-    Logistik: '/images/logistik.png',
-    Kesehatan: '/images/kesehatan.png',
-    Lainnya: '/images/lainnya.png',
-  };
-
-  return (
-    <div className="bg-white/90 backdrop-blur-md rounded-[32px] overflow-hidden hover:shadow-[0_20px_50px_rgba(139,24,42,0.12)] hover:-translate-y-2 transition-all duration-300 group border border-white shadow-[0_8px_30px_rgba(0,0,0,0.04)] flex flex-col pb-1 relative min-h-[480px] w-full max-w-full overflow-hidden">
-      {/* Subtle top border gradient */}
-      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-maroon-light to-[#d7bc9d] opacity-0 group-hover:opacity-100 transition-opacity z-10" />
-
-      <div className="relative h-[200px] overflow-hidden p-2 flex-shrink-0">
-        <div className="relative w-full h-full rounded-[24px] overflow-hidden shadow-inner">
-          <img
-            src={job.image || 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=400'}
-            alt={job.title}
-            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-
-          <span className="absolute top-3 left-3 text-[10px] font-black uppercase tracking-widest px-3.5 py-1.5 rounded-full bg-white/90 backdrop-blur-md text-maroon shadow-sm">
-            {job.type}
-          </span>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onSave(job);
-            }}
-            className={`absolute top-3 right-3 w-9 h-9 rounded-full flex items-center justify-center shadow-md transition-all duration-300 text-sm backdrop-blur-md border ${isSaved ? 'bg-maroon text-white border-maroon' : 'bg-white/90 text-gray-400 hover:text-maroon border-white hover:bg-white'}`}
-          >
-            <img src="/images/icon-save.png" alt="save" className="w-4 h-4" />
-          </button>
-        </div>
-      </div>
-      <div className="px-4 py-3 flex flex-col flex-1">
-        <div className="inline-flex items-center gap-1.5 bg-gradient-to-r from-[#fcf4e8] to-white border border-[#f0e4d2] text-[#c99042] px-3.5 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-wider mb-2 w-fit shadow-sm">
-          <img
-            src={catIcon[job.category] || '💼'}
-            alt={job.category}
-            className="w-4 h-4 object-contain"
-          />{' '}
-          {job.category}
-        </div>
-        <h3 className="font-black text-gray-900 text-[17px] leading-tight mb-1 line-clamp-2 min-h-[44px] break-words hyphens-auto">
-          {job.title}
-        </h3>
-        <p className="text-gray-500 text-[13px] font-semibold mb-3 flex items-center gap-2">
-          <img src="/images/icon-gedung.png" alt="perusahaan" className="w-4 h-4" />
-          <span className="truncate">{job.company}</span>
-        </p>
-
-        <div className="flex flex-wrap gap-2 mb-3 min-h-[28px]">
-          {(Array.isArray(job.skills) ? job.skills : job.skills.split(',')).slice(0, 2).map((s) => (
-            <span
-              key={s}
-              className="bg-white text-gray-600 border border-gray-200 px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider shadow-sm"
-            >
-              {s.trim()}
-            </span>
-          ))}
-        </div>
-
-        <div className="flex items-center gap-2 text-[11px] text-gray-500 mb-4 font-bold uppercase tracking-wider flex-wrap">
-          <span className="flex items-center gap-1.5 bg-gray-50 px-2.5 py-1 rounded-md border border-gray-100">
-            <img src="/images/icon-location.png" alt="location" className="w-4 h-4" />
-            {job.location}
-          </span>
-          <span className="flex items-center gap-1.5 bg-gray-50 px-2.5 py-1 rounded-md border border-gray-100">
-            <img src="/images/icon-hours.png" alt="hours" className="w-4 h-4" /> {job.hours}
-          </span>
-        </div>
-
-        <div className="flex items-end justify-between mt-auto pt-3 border-t border-gray-100/80">
-          <div>
-            <div className="text-[10px] text-gray-400 font-black uppercase tracking-widest mb-1">
-              Gaji mulai dari
-            </div>
-            <div className="font-black text-maroon text-[15px] flex items-center gap-1.5">
-              <img src="/images/icon-gaji.png" alt="gaji" className="w-5 h-5" />
-              {job.salary}
-              <span className="text-[10px] text-gray-400 font-bold ml-0 border-l border-gray-200 pl-2 uppercase">
-                Min. {job.minAge} thn
-              </span>
-            </div>
-          </div>
-          <button
-            onClick={() => onSelect(job)}
-            className="w-10 h-10 bg-gradient-to-br from-[#6b1020] to-[#8b1a2e] text-white rounded-2xl flex items-center justify-center hover:shadow-[0_8px_16px_rgba(61,10,20,0.4)] hover:-translate-y-1 transition-all duration-300 shadow-md text-lg"
-          >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={3}
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
         </div>
       </div>
     </div>
