@@ -1985,7 +1985,7 @@ export default function App() {
             className="px-6 md:px-10 mt-6 pb-12 relative z-20"
           >
             <div className="max-w-7xl mx-auto scroll-mt-28">
-              <div className="bg-white/90 rounded-[32px] shadow-[0_16px_50px_rgba(0,0,0,0.06)] p-3.5 flex flex-col sm:flex-row flex-wrap lg:flex-nowrap items-start sm:items-center gap-3 border border-white w-full max-w-full overflow-hidden">
+              <div className="bg-white/90 rounded-[32px] shadow-[0_16px_50px_rgba(0,0,0,0.06)] p-3.5 flex flex-col sm:flex-row flex-wrap lg:flex-nowrap items-start sm:items-center gap-3 border border-white w-full max-w-full overflow-visible">
                 {[
                   {
                     label: 'Tipe Pekerjaan',

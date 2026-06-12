@@ -1113,7 +1113,7 @@ div[class*="container"],
   .nav-bar {
     padding-left: 1rem !important;
     padding-right: 1rem !important;
-    overflow: hidden !important;
+    overflow: visible !important;
   }
 
   .nav-bar .flex.items-center.gap-9 {
@@ -1123,6 +1123,29 @@ div[class*="container"],
   .nav-bar .md\:flex {
     display: none !important;
   }
+}
+
+/* ── NAVBAR STICKY FIX ── */
+.nav-bar {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 9999 !important;
+  isolation: isolate;
+}
+
+/* ── FILTER BAR OVERFLOW FIX ── */
+.filter-bar-container,
+section#jobs-section {
+  overflow: visible !important;
+}
+
+/* ── DROPDOWN Z-INDEX FIX ── */
+.relative.flex-shrink-0 {
+  z-index: 50;
+}
+
+.relative.flex-shrink-0 > div:last-child {
+  z-index: 99999 !important;
 }
 
 /* ── ENSURE NO OVERFLOW ON ROOT ── */
