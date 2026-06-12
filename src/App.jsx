@@ -178,7 +178,7 @@ function DropdownFilter({ label, options, selected, onSelect, multi = false }) {
       : selected;
 
   return (
-    <div className="relative flex-shrink-0" ref={ref}>
+    <div className="relative flex-shrink-0" ref={ref} style={{ position: 'relative', zIndex: open ? 99999 : 50 }}>
       <button
         onClick={(e) => {
           e.stopPropagation();
@@ -197,12 +197,18 @@ function DropdownFilter({ label, options, selected, onSelect, multi = false }) {
           <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
         </svg>
       </button>
-      {open && (
-        <div
-          className="absolute top-full left-0 mt-3 bg-white/95 backdrop-blur-xl border border-gray-100 shadow-[0_12px_40px_rgba(0,0,0,0.12)] rounded-2xl py-3 min-w-[180px] max-h-56 overflow-y-auto"
-          style={{ zIndex: 99999 }}
-          onClick={(e) => e.stopPropagation()}
-        >
+      <div
+        className={`dropdown-options absolute top-full left-0 mt-3 bg-white border border-gray-100 shadow-[0_12px_40px_rgba(0,0,0,0.15)] rounded-2xl py-3 px-2 min-w-[220px] ${open ? 'block' : 'hidden'}`}
+        style={{
+          zIndex: 99999,
+          visibility: open ? 'visible' : 'hidden',
+          opacity: open ? 1 : 0,
+          transition: 'opacity 0.2s ease, visibility 0.2s ease',
+          maxHeight: open ? '400px' : '0',
+          overflow: open ? 'auto' : 'hidden',
+        }}
+        onClick={(e) => e.stopPropagation()}
+      >
           {options.map((opt) => {
             const isSel = multi ? selected.includes(opt) : selected === opt;
             return (
@@ -1985,7 +1991,7 @@ export default function App() {
             className="px-6 md:px-10 mt-6 pb-12 relative z-20"
           >
             <div className="max-w-7xl mx-auto scroll-mt-28">
-              <div className="bg-white/90 rounded-[32px] shadow-[0_16px_50px_rgba(0,0,0,0.06)] p-3.5 flex flex-col sm:flex-row flex-wrap lg:flex-nowrap items-start sm:items-center gap-3 border border-white w-full max-w-full overflow-visible">
+              <div className="filter-bar-wrapper bg-white/90 rounded-[32px] shadow-[0_16px_50px_rgba(0,0,0,0.06)] p-3.5 flex flex-col sm:flex-row flex-wrap lg:flex-nowrap items-start sm:items-center gap-3 border border-white w-full max-w-full overflow-visible">
                 {[
                   {
                     label: 'Tipe Pekerjaan',

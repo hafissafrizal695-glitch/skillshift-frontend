@@ -1139,13 +1139,53 @@ section#jobs-section {
   overflow: visible !important;
 }
 
-/* ── DROPDOWN Z-INDEX FIX ── */
+/* ── DROPDOWN Z-INDEX AND VISIBILITY FIX ── */
 .relative.flex-shrink-0 {
   z-index: 50;
+  position: relative !important;
 }
 
+/* Dropdown menu - ensure it appears above everything */
 .relative.flex-shrink-0 > div:last-child {
   z-index: 99999 !important;
+  position: absolute !important;
+  top: 100% !important;
+  left: 0 !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  display: block !important;
+  min-width: 200px;
+  width: auto;
+  margin-top: 8px;
+  pointer-events: auto !important;
+}
+
+/* Force show dropdown options */
+.dropdown-options {
+  visibility: visible !important;
+  opacity: 1 !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+  display: block !important;
+}
+
+/* Mobile filter bar dropdown fix */
+@media (max-width: 768px) {
+  .filter-bar-wrapper {
+    position: relative !important;
+    overflow: visible !important;
+    z-index: 60 !important;
+  }
+
+  .filter-bar-wrapper > div {
+    overflow: visible !important;
+  }
+
+  .filter-bar-wrapper .relative {
+    position: relative !important;
+    z-index: 60 !important;
+  }
 }
 
 /* ── ENSURE NO OVERFLOW ON ROOT ── */
