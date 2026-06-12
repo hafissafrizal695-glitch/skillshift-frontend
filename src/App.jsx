@@ -183,6 +183,7 @@ function DropdownFilter({ label, options, selected, onSelect, multi = false }) {
         onClick={(e) => {
           e.stopPropagation();
           setOpen((o) => !o);
+          console.log('Dropdown clicked! open:', !open, '| options length:', options?.length, '| options:', options);
         }}
         className={`flex items-center gap-2 px-4 py-2.5 text-[12px] font-bold text-gray-800 transition-all whitespace-nowrap min-w-[100px] sm:min-w-[130px] justify-between hover:text-maroon rounded-xl hover:bg-maroon/5 ${isActive ? 'text-maroon bg-maroon/5' : ''}`}
       >
@@ -197,6 +198,20 @@ function DropdownFilter({ label, options, selected, onSelect, multi = false }) {
           <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
         </svg>
       </button>
+      {/* DEBUG VISIBLE INDICATOR - shows dropdown state */}
+      {open && (
+        <div
+          className="absolute top-full left-0 mt-3 bg-red-500 text-white p-4 rounded-xl shadow-lg min-w-[200px] z-[999999]"
+          style={{ position: 'absolute', top: '100%', left: 0, marginTop: '8px' }}
+        >
+          <p className="font-bold text-sm">DEBUG: Dropdown Open!</p>
+          <p className="text-xs">Options: {options?.length || 0}</p>
+          <p className="text-xs mt-1">Options list:</p>
+          {options?.map((opt, idx) => (
+            <p key={idx} className="text-xs bg-red-600 px-2 py-1 rounded mt-1">{opt}</p>
+          ))}
+        </div>
+      )}
       <div
         className={`dropdown-options absolute top-full left-0 mt-3 bg-white border border-gray-100 shadow-[0_12px_40px_rgba(0,0,0,0.15)] rounded-2xl py-3 px-2 min-w-[220px] ${open ? 'block' : 'hidden'}`}
         style={{
@@ -2017,7 +2032,9 @@ export default function App() {
                     value: filterSkill[0] === 'Semua' ? 'Semua' : filterSkill[0],
                     onChange: (v) => setFilterSkill([v]),
                   },
-                ].map(({ label, options, value, onChange }, i) => (
+                ].map(({ label, options, value, onChange }, i) => {
+                  console.log(`[Filter] ${label}: ${options?.length} items, data:`, options);
+                  return (
                   <React.Fragment key={label}>
                     <div className="flex-1 min-w-0 sm:min-w-[120px] md:min-w-[140px] px-2 py-1.5 w-full sm:w-auto">
                       <p className="text-[10px] font-black text-gray-400 mb-1 pl-2 sm:pl-4 uppercase tracking-widest whitespace-nowrap">
@@ -2034,7 +2051,8 @@ export default function App() {
                       <div className="hidden lg:block w-px h-12 bg-gray-200 flex-shrink-0" />
                     )}
                   </React.Fragment>
-                ))}
+                );
+                })}
 
                 <div className="w-full mt-3 lg:mt-0 px-2 lg:min-w-[280px]">
                   <button
@@ -2188,7 +2206,9 @@ export default function App() {
                     value: filterSkill[0] === 'Semua' ? 'Semua' : filterSkill[0],
                     onChange: (v) => setFilterSkill([v]),
                   },
-                ].map(({ label, options, value, onChange }, i) => (
+                ].map(({ label, options, value, onChange }, i) => {
+                  console.log(`[Filter] ${label}: ${options?.length} items, data:`, options);
+                  return (
                   <React.Fragment key={label}>
                     <div className="flex-1 min-w-0 sm:min-w-[120px] md:min-w-[140px] px-2 py-1.5 w-full sm:w-auto">
                       <p className="text-[10px] font-black text-gray-400 mb-1 pl-2 sm:pl-4 uppercase tracking-widest whitespace-nowrap">
@@ -2205,7 +2225,8 @@ export default function App() {
                       <div className="hidden lg:block w-px h-12 bg-gray-200 flex-shrink-0" />
                     )}
                   </React.Fragment>
-                ))}
+                );
+                })}
 
                 {/* Tombol / Input Search */}
                 <div className="w-full mt-3 lg:mt-0 px-2">
